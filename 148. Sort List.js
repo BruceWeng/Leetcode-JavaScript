@@ -1,4 +1,10 @@
 /**
+ * Note:
+ * 1. merge function
+ * 2. use fast and slow pointer finding middle Node
+ * 3. sort right half ListNode them set mid.next = null for left ListNode
+ */
+/**
  * Definition for singly-linked list.
  * function ListNode(val) {
  *     this.val = val;
