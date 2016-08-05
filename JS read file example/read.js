@@ -13,7 +13,7 @@ fs.readFile('example.js', function(error, data) {
   let arrayBySpace = data.split(' ');
 
   let arrayByWord = [];
-  
+
   for (let i = 0; i < lines; i++) {
     let words = arrayByLine[i].split(' ');
     for (let j = 0; j < words.length; j++) {
