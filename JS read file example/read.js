@@ -1,6 +1,6 @@
 'use strict';
 let fs = require('fs');
-fs.readFile('example.js', function(error, data) {
+fs.readFile(process.argv[2], function(error, data) {
   console.log('Finish reading the file!');
 
   data = data.toString();
