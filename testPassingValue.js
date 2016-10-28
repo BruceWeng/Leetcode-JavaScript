@@ -13,4 +13,4 @@ console.log(test3); //{name: 'Bruce', id: 0}
 let test5 = {name: 'Gloria', id: 1};
 let test6 = test5;
 test6.id += 1;
-console.log(test5.id);
+console.log(test5.id); //2
