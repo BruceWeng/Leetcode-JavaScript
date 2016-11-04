@@ -64,4 +64,5 @@ class Trie {
 
 let test1 = new Trie();
 test1.insert('apple');
-console.log(test1);
+console.log(test1.root);
+console.log(JSON.stringify(test1.root.children));
