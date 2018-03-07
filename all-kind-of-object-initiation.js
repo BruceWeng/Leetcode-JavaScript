@@ -18,7 +18,7 @@ Person.prototype.getName = function() {
   return this._name;
 }
 
-Person.prptotype.getAge = function() {
+Person.prototype.getAge = function() {
   return this._age;
 }
 
@@ -33,9 +33,13 @@ Person.prototype.setAge = function(age) {
 }
 
 function Student(name, age, studentID) {
-  Person.call(this, studentID);
+  Person.call(this, name, age);
   this._studentID = studentID;
 }
+// Link Student.prototype to Person.prototype
+Student.prototype = Object.create(Person.prototype);
+// Link Student constructor back to itself
+Student.prototype.constructor = Student;
 
 Student.prototype.getStudentID = function() {
   return this._studentID;
@@ -45,9 +49,6 @@ Student.prototype.setStudentID = function(id) {
   this._studentID = id;
   return this; // Method chaining
 }
-
-// Link Student.prototype to Person.prototype
-Student.prototype = Object.create(Person.prototype);
 
 const Bruce = new Student("Bruce", 28, 101967);
 
@@ -101,10 +102,10 @@ const Person = {
   init: function(name, age) {
     this._name = name;
     this._age = age;
-  }
+  },
   setName: function(name) {
     this._name = name;
-  }
+  },
   setAge: function(age) {
     this._age = age;
   }
@@ -123,7 +124,7 @@ Student.setStudentID = function(id) {
 }
 
 const Bruce = Object.create(Student);
-bruce.init("Bruce", 28, 101967);
+Bruce.init("Bruce", 28, 101967);
 
 /**
  * Test delegate behaviors from multiple objects
