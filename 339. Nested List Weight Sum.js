@@ -60,8 +60,7 @@ Given the list [1,[4,[6]]], return 27. (one 1 at depth 1, one 4 at depth 2, and 
     let sumValue = 0;
 
     for (let i = 0; i < nestedList.length; i += 1) {
-        const nestListNode = { nextElem: nestedList[i], depth: 1};
-        stack.push(nestListNode);
+        stack.push({nextElem: nestedList[i], depth: 1});
     }
 
     while (stack.length) {
@@ -72,8 +71,7 @@ Given the list [1,[4,[6]]], return 27. (one 1 at depth 1, one 4 at depth 2, and 
         else {
             let newNestedList = curr.nextElem.getList();
             for (let j = 0; j < newNestedList.length; j += 1) {
-                const nextListNode = { nextElem: newNestedList[j], depth: curr.depth + 1};
-                stack.push(nextListNode);
+                stack.push({nextElem: newNestedList[j], depth: curr.depth + 1});
             }
         }
     }
