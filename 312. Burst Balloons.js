@@ -30,6 +30,9 @@ Explanation: nums = [3,1,5,8] --> [3,5,8] -->   [3,8]   -->  [8]  --> []
  * 6. Use a for loop i from left+1 to right-1 
  * 7. table[left][right] = max(table[left][right], nums[left]*nums[i]*nums[right] + table[left][i] + table[i][right])
  * 8. return table[0][n-1]
+ * 
+ * T: O(n^3)
+ * S: O(n^2)
  */
 
  /**
