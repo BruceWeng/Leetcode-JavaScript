@@ -1,4 +1,13 @@
 /**
+Merge two sorted linked lists and return it as a new list. 
+The new list should be made by splicing together the nodes of the first two lists.
+
+Example:
+
+Input: 1->2->4, 1->3->4
+Output: 1->1->2->3->4->4
+ */
+/**
  * Definition for singly-linked list.
  * function ListNode(val) {
  *     this.val = val;
@@ -11,29 +20,31 @@
  * @return {ListNode}
  */
 var mergeTwoLists = function(l1, l2) {
-    let head = new ListNode(0);
-    let result = head;
+    let dummy = new ListNode(0);
+    let current = dummy;
 
-    while (l1 && l2) {
+    while (l1 !== null && l2 !== null) {
         if (l1.val < l2.val) {
-            result.next = l1;
+            current.next = l1;
             l1 = l1.next;
         } else {
-            result.next = l2;
+            current.next = l2;
             l2 = l2.next;
         }
-        result = result.next;
-    }
-    while (l1 || l2) {
-        if (l1) {
-            result.next = l1;
-            l1 = l1.next;
-        } else {
-            result.next = l2;
-            l2 = l2.next;
-        }
-        result = result.next;
+        current = current.next;
     }
 
-    return head.next;
+    // Merge after one list finished traversing
+    while (l1 !== null || l2 !== null) {
+        if (l1 !== null) {
+            current.next = l1;
+            l1 = l1.next;
+        } else {
+            current.next = l2;
+            l2 = l2.next;
+        }
+        current = current.next;
+    }
+
+    return dummy.next;
 };
