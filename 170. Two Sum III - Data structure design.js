@@ -63,6 +63,11 @@ class TwoSum {
     find(value) {
         for (let key in this.map) {
             // Remember to parse key into number!
+            /**
+             * If not Number(key)
+             * typeof key === 'string'
+             * diff = 0 - '0' = 0
+             */
             key = Number(key);
             let diff = value - key;
             if (key === diff && this.map[key] > 1) return true;
@@ -71,6 +76,10 @@ class TwoSum {
         return false
     }
 }
+
+let twoSum = new TwoSum();
+twoSum.add(0);
+console.log(twoSum.find(0)); // false
 
 // Algorithm2
 class TwoSum2 {
