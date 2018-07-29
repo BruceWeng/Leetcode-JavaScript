@@ -79,14 +79,14 @@ function inorder_iteration(root) {
   }
 }
 
-let root = new Node(1);
-root.left = new Node(2);
-root.right = new Node(3);
-root.left.left = new Node(4);
-root.left.right = new Node(5);
-root.right.left = new Node(6);
-root.right.right = new Node(7);
+let root = new Node("A");
+root.left = new Node("B");
+root.right = new Node("C");
+root.left.left = new Node("D");
+root.left.right = new Node("E");
+root.right.left = new Node("F");
+root.right.right = new Node("G");
 
-inOrder(root); //4, 2, 5, 1, 6, 3, 7
+// inOrder(root); //4, 2, 5, 1, 6, 3, 7
 inorder_recursion(root);
-inorder_iteration(root);
+// inorder_iteration(root);

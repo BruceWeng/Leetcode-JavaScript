@@ -1,4 +1,4 @@
-class Node {
+class TreeNode {
   constructor(value) {
     this.value = value;
     this.left = null;
@@ -16,7 +16,6 @@ function dfs(root) {
 
   while (stack.length !== 0) {
     let curr = stack.pop();
-    console.log(curr.value);
 
     if (curr.right !== null) {
       stack.push(curr.right);
@@ -25,16 +24,20 @@ function dfs(root) {
     if (curr.left !== null) {
       stack.push(curr.left);
     }
+
+    console.log(curr.value);
   }
 }
 
 /***************************************************** */
 
 function dfs_recursion(root) {
+  // base case when you hit the bottom of the tree
   if (root === null) {
     return root;
   }
 
+  // recursive case
   console.log(root.value);
   if (root.left !== null) {
     dfs_recursion(root.left);
@@ -72,14 +75,14 @@ function preorder_iteration(root) {
   }
 }
 
-let root = new Node(1);
-root.left = new Node(2);
-root.right = new Node(3);
-root.left.left = new Node(4);
-root.left.right = new Node(5);
-root.right.left = new Node(6);
-root.right.right = new Node(7);
+let root = new TreeNode("A");
+root.left = new TreeNode("B");
+root.right = new TreeNode("C");
+root.left.left = new TreeNode("D");
+root.left.right = new TreeNode("E");
+root.right.left = new TreeNode("F");
+root.right.right = new TreeNode("G");
 
-dfs(root); //1, 2, 4, 5, 3, 6, 7
+// dfs(root); //1, 2, 4, 5, 3, 6, 7
 dfs_recursion(root);
-preorder_iteration(root);
+// preorder_iteration(root);
