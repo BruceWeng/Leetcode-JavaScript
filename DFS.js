@@ -30,7 +30,6 @@ function dfs(root) {
 }
 
 /***************************************************** */
-
 function dfs_recursion(root) {
   // base case when you hit the bottom of the tree
   if (root === null) {
@@ -46,6 +45,28 @@ function dfs_recursion(root) {
     dfs_recursion(root.right);
   }
 }
+
+function dfs_recursion2(root) {
+  let result = [];
+  function helper(root) {
+    // base case when you hit the bottom of the tree
+    if (root === null) {
+      return;
+    }
+  
+    // recursive case
+    result.push(root.value);
+    if (root.left !== null) {
+      helper(root.left);
+    }
+    if (root.right !== null) {
+      helper(root.right);
+    }
+  }
+  helper(root);
+  return result;
+}
+
 
 /***************************************************** */
 
@@ -84,5 +105,5 @@ root.right.left = new TreeNode("F");
 root.right.right = new TreeNode("G");
 
 // dfs(root); //1, 2, 4, 5, 3, 6, 7
-dfs_recursion(root);
+console.log(dfs_recursion(root));
 // preorder_iteration(root);
