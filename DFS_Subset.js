@@ -61,16 +61,17 @@ const subsets = function(nums) {
  * @param {number} start start index for child node
  */
 const backtrack = function(nums, result, path, start) {
-    // 6. Update result, need to copy elements in the path into a new array
+    // a. Base case happen when there is no next element (start === nums.length), no need to specify
+    // a.1 Update result, need to copy elements in the path into a new array
     result.push([...path]);
 
-    // 7. for loop in range(start:): Iterate the nums from start index to the end
+    // b. for loop in range(start:): Iterate the nums from start index to the end
     for (let i = start; i < nums.length; i += 1) {
-        // 7.1 Update path
+        // b.1 Update path
         path.push(nums[i]);
-        // 7.2 Recursive case, next start index is the key
+        // b.2 Recursive case, next start index is the key
         backtrack(nums, result, path, i+1);
-        // 7.3 Resotre state of path to its parent node: pop last element
+        // b.3 Resotre state of path to its parent node: pop last element
         path.pop();
     }
 }
@@ -79,6 +80,6 @@ let test1 = [1, 2, 3];
 console.log(subsets(test1));
 
 /**
- * T: O(2^n)
- * S: O(2^n)
+ * T: O(Numbers of paths * time to construct each path) = O(n*2^n)
+ * S: O(2^n) (Times to call helper function)
  */
