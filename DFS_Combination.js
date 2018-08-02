@@ -37,7 +37,7 @@ const combinationSum = function(nums, target) {
     // 1. Initiate instance variable result
     let result = [];
     
-    // 3. Sort the nums
+    // 3. Sort the nums for ascending order result
     nums.sort((a, b) => a - b);
 
     /**
@@ -78,14 +78,14 @@ const backtrack = function(nums, target, result, path, start) {
     // a.2 Base case 2: Case to update result, need to copy elements in the path into a new array
     else if (target === 0) result.push([...path]); // Implicit return
 
-    // c. for loop in range(start:): Iterate the nums from start index to the end
+    // b. for loop in range(start:): Iterate the nums from start index to the end
     for (let i = start; i < nums.length; i += 1) {
-        // c.1 Update path
+        // b.1 Update path
         path.push(nums[i]);
-        // c.2 Recursive case, next target is the key
+        // b.2 Recursive case, next target is the key
         // next start index is not i+1 because we can use same elements
         backtrack(nums, target-nums[i], result, path, i); 
-        // c.3 Resotre state of path to its parent node: pop last element
+        // b.3 Resotre state of path to its parent node: pop last element
         path.pop();
     }
 };

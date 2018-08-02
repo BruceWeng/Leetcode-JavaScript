@@ -1,30 +1,26 @@
 /**
- * 78. Subsets
+46. Permutations
 
-Given a set of distinct integers, nums, return all possible subsets (the power set).
-
-Note: The solution set must not contain duplicate subsets.
+Given a collection of distinct integers, return all possible permutations.
 
 Example:
 
-Input: nums = [1,2,3]
+Input: [1,2,3]
 Output:
 [
-  [3],
-  [1],
-  [2],
   [1,2,3],
-  [1,3],
-  [2,3],
-  [1,2],
-  []
+  [1,3,2],
+  [2,1,3],
+  [2,3,1],
+  [3,1,2],
+  [3,2,1]
 ]
  */
 /**
  * @param {number[]} nums
  * @return {number[][]}
  */
-const subsets = function(nums) {
+const permute = function(nums) {
     // 1. Initiate instance variable result
     let result = [];
     
@@ -47,39 +43,39 @@ const subsets = function(nums) {
      */ 
 
      // 5. Invoke Backtrack Helper function
-     backtrack(nums, result, [], 0);
+     backtrack(nums, result, []);
 
     // 2. Return the result
     return result;
-}
+};
 
 // 4. Declare Backtrack Helper function
 /**
  * @param {number[]} nums 
  * @param {number[][]} result 
  * @param {number[]} path 
- * @param {number} start start index for child node
  */
-const backtrack = function(nums, result, path, start) {
-    // a. Base case happen when there is no next element (start === nums.length), no need to specify
-    // a.1 Update result, need to copy elements in the path into a new array
-    result.push([...path]);
+const backtrack = function(nums, result, path) {
+    // a. Base case: path.length === nums.length
+    if (path.length === nums.length) result.push([...path]);
 
-    // b. for loop in range(start:): Iterate the nums from start index to the end
-    for (let i = start; i < nums.length; i += 1) {
+    // b. for loop in range(:): Iterate the whole nums
+    for (let i = 0; i < nums.length; i += 1) {
+        if (path.includes(nums[i])) continue;
         // b.1 Update path
         path.push(nums[i]);
-        // b.2 Recursive case, next start index is the key
-        backtrack(nums, result, path, i+1);
+        // b.2 Recursive case
+        // next start index is not i+1 because we will always iterate nums from 0 index
+        backtrack(nums, result, path); 
         // b.3 Resotre state of path to its parent node: pop last element
         path.pop();
     }
-}
+};
 
 let test1 = [1, 2, 3];
-console.log(subsets(test1));
+console.log(permute(test1));
 
 /**
- * T: O(Numbers of paths * time to construct each path) = O(2^n * n)
- * S: O(Times to call helper function * new space for copy path) = O(2^n * n) 
+ * T: O(Numbers of paths * time to construct each path) = O(n! * n)
+ * S: O(Times to call helper function * new space for copy path) = O(n! * n)
  */
