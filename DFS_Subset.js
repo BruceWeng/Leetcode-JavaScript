@@ -80,6 +80,6 @@ let test1 = [1, 2, 3];
 console.log(subsets(test1));
 
 /**
- * T: O(Numbers of paths * time to construct each path) = O(n*2^n)
- * S: O(2^n) (Times to call helper function)
+ * T: O(Numbers of paths * time to construct each path) = O(2^n * n)
+ * S: O(2^n * n) (Times to call helper function * new space for copy path)
  */
