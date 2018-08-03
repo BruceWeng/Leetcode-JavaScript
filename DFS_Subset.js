@@ -45,7 +45,7 @@ const subsets = function(nums) {
      * 3. The sort is not stable in Firefox.
      * 4. Different browsers feature different sort algorithms.
      */ 
-
+    
      // 5. Invoke Backtrack Helper function
      backtrack(nums, result, [], 0);
 
@@ -63,15 +63,16 @@ const subsets = function(nums) {
 const backtrack = function(nums, result, path, start) {
     // a. Base case happen when there is no next element (start === nums.length), no need to specify
     // a.1 Update result, need to copy elements in the path into a new array
-    result.push([...path]);
+    result.push([...path]); // path is unchanged. O(n)
 
     // b. for loop in range(start:): Iterate the nums from start index to the end
     for (let i = start; i < nums.length; i += 1) {
         // b.1 Update path
         path.push(nums[i]);
         // b.2 Recursive case, next start index is the key
+        // Each node in the tree comes from invoking the helper function
         backtrack(nums, result, path, i+1);
-        // b.3 Resotre state of path to its parent node: pop last element
+        // b.3 Restore state of path to its parent node: pop last element
         path.pop();
     }
 }
