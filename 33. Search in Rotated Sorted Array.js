@@ -26,16 +26,33 @@ var search = function(nums, target) {
       return mid;
     }
 
+    /**
+     * 0. 6 conditions in total: can be reduce to 4 conditions
+     * 1. Consider only both mid and target on the same side (left or right).
+     *    Because if mid and target on the different side:
+     *      a. mid(left), target(right): nums[mid] > target: start = mid, covered in else condition
+     *      b. mid(right), target(left): nums[mid] <= target: end = mid, covered in else condition
+     * 2. Check which side is mid first
+     * 3. Check relation between target and mid
+     */
+    // if mid is on left side: nums[mid] > nums[start]
     if (nums[mid] > nums[start]) {
+      // if target is on left side: target >= nums[start]
       if (target >= nums[start] && nums[mid] >= target) {
+        // nums[mid] >= target (case 3)
         end = mid;
       } else {
+        // nums[mid] < target (case 1, 4)
         start = mid;
       }
+    // if mid is on right side: nums[mid] < nums[start]
     } else {
+      // if target is on right side: target <= nums[end]
       if (target <= nums[end] && nums[mid] <= target) {
+        // nums[mid] <= target (case 6)
         start = mid;
       } else {
+        // nums[mid] > target (case 2, 5)
         end = mid;
       }
     }

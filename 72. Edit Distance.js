@@ -1,3 +1,16 @@
+/**
+ * string1: "abb" -> string2: "ac"
+ * 1. delete string1: "ab" -> "ac" (i-1, j)
+ * 2. insert string1 and string2: "abbc" -> "ac" = "abb" -> "a" (i, j-1)
+ * 3. replace string1: "abc" -> "ac" = "ab" -> "a" (i-1, j-1)
+ */
+/**
+ * Given two words word1 and word2, find the minimum number of operations 
+ * required to convert word1 to word2.
+ * 
+ * @param {string} word1 
+ * @param {string} word2 
+ */
 var minDistance = function(word1, word2) {
     let n = word1.length;
     let m = word2.length;

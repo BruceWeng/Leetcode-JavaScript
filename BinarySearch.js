@@ -10,12 +10,12 @@
 const binarySearch = function(nums, target) {
     let start = 0;
     let end = nums.length - 1;
-    // let checkCount = 0
+    let checkCount = 0
     // Search
     while (start + 1 < end) {
         let mid = start + Math.floor((end - start) / 2);
-        // checkCount += 1;
-        if (nums[mid] === target) return true;
+        checkCount += 1;
+        if (nums[mid] === target) return checkCount;
 
         if (nums[mid] < target) {
             start = mid;
@@ -24,17 +24,17 @@ const binarySearch = function(nums, target) {
         }
     }
     // Second check
-    // checkCount += 1;
+    checkCount += 1;
     if (nums[start] === target) {
-        return true;
+        return checkCount;
     }
 
-    // checkCount += 1;
+    checkCount += 1;
     if (nums[end] === target) {
-        return true;
+        return checkCount;
     }
 
-    return false;
+    return checkCount;
 }
 
 let test = [1, 2, 3, 4, 5, 6, 7, 8];

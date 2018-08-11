@@ -52,9 +52,10 @@ const findPeakElementRecursion = function(nums) {
 /**
  * Binary Search Helper Function
  * 
- * @param {*} nums 
- * @param {*} start 
- * @param {*} end 
+ * @param {number[]} nums 
+ * @param {number} start 
+ * @param {number} end 
+ * @return {number} index
  */
 const helper = function(nums, start, end) {
     // Base case
