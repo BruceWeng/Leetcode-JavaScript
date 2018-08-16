@@ -37,8 +37,8 @@ const maxSubArray = function(nums) {
     
   // Transfer states
   for (let i = 1; i < nums.length; i += 1) {
-    sum[i] = nums[i] + (sum[i-1] > 0 ? sum[i-1] : 0);
-    if (sum[i] > result) result = sum[i];
+    sum[i] = Math.max(nums[i], nums[i] + sum[i-1]);
+    result = Math.max(result, sum[i]);
   }
   return result;
 };
