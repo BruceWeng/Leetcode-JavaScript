@@ -39,6 +39,7 @@ Return false.
 /**
  * ReturnType class used for maintain multiple values for each level
  */
+// 1. Define Return Type
 class ReturnType {
   constructor(isBalanced, maxDepth) {
     this.isBalanced = isBalanced;
@@ -50,26 +51,28 @@ class ReturnType {
  * @return {boolean}
  */
 const isBalanced = function(root) {
+  // 3. Return Helper function
   return helper(root).isBalanced;
 };
 
+// 2. Define Helper function
 const helper = function(node) {
-  // Base Case
+  // 4. Base Case
   if (node === null) {
     return new ReturnType(true, 0);
   }
 
-  // Recursive Case
-  // Find left subtree
+  // 5. Recursive Case
+  // 5.1 Find left subtree
   let left = helper(node.left);
-  // Find right subtree
+  // 5.2 Find right subtree
   let right = helper(node.right);
 
-  // Handle false cases
+  // 5.3 Handle false cases
   if (!left.isBalanced || !right.isBalanced) return new ReturnType(false, -1);
 
   if (Math.abs(left.maxDepth - right.maxDepth) > 1) return new ReturnType(false, -1);
 
-  // Handle true case
+  // 5.4 Handle true case
   return new ReturnType(true, Math.max(left.maxDepth, right.maxDepth) + 1);
 };
