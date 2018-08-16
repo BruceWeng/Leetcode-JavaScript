@@ -59,8 +59,10 @@ const helper = function(node) {
 
   // 5. Recursive Case
   // 5.1 Find left subtree
+  // left is ReturnType, not a TreeNode
   let left = helper(node.left);
   // 5.2 Find right subtree
+  // right is ReturnType, not a TreeNode
   let right = helper(node.right);
 
   // 5.3 Handle false cases

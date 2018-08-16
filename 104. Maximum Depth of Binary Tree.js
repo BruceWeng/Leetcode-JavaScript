@@ -28,22 +28,27 @@ return its depth = 3.
  * @return {number}
  */
 const maxDepth = function(root) {
-  let result = 0;
-
+  // 1. Declre instance variable
+  let result = 0; // depth
+  
+  // 3. Declare helper function
   const helper = function(node, level) {
     // Base Case
     if (node === null) {
       return;
     }
-    // Update result
+    // Update result (instance variable)
     result = Math.max(result, level);
+    // if (level > result) result = level;
   
     // Recursive Case
     helper(node.left, level + 1);
     helper(node.right, level + 1);
   };
 
+  // 4. Invoke the helper function
   helper(root, 1);
 
+  // 2. return instance variable
   return result;
 };
