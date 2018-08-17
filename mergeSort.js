@@ -8,9 +8,9 @@
 const mergeSort = function(arr) {
     // Array of length 0 or 1 are sorted by definition.
     if (arr.length < 2) return arr;
-
-    const left = arr.slice(0, Math.floor(arr.length / 2));
-    const right = arr.slice(Math.floor(arr.length / 2), arr.length);
+    let mid = Math.floor(arr.length / 2);
+    const left = arr.slice(0, mid);
+    const right = arr.slice(mid);
 
     return merge(mergeSort(left), mergeSort(right));
 }
