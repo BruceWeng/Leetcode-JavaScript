@@ -17,10 +17,18 @@
  *      d. array.pop()
  *      e. sinkDown (choose the smaller child as swapNode, swap currNode and swapNode until swapIdx == null)
  *      f. return min
+ * 5. Remove(val):
+ *      a. Find removeIdx
+ *      b. If removeIdx == undefined: return 
+ *      c. Swap(removeIdx, lastIdx)
+ *      d. result = array.pop()
+ *      e. bubbleUp(removeIdx)
+ *      f. sinkDown(removeIdx)
+ *      g. return result
  * 5. Helper functions:
  *      swap(idx1, Idx2)
- *      bubbleUp()
- *      sinkDown()
+ *      bubbleUp(startIdx)
+ *      sinkDown(startIdx)
  * Note: 
  * 1. find parrent node index formula: 
  *      let parentIdx = Math.floor((currIdx + 1) / 2) - 1;
@@ -42,7 +50,8 @@ class Heap {
     push(node) {
         let arr = this.array;
         arr.push(node);
-        this.bubbleUp();
+        // Bubble up start from last index
+        this.bubbleUp(arr.length - 1);
     }
 
     pop() {
@@ -58,13 +67,37 @@ class Heap {
   
         arr.pop();
   
-        this.sinkDown();
+        // Sink Down start from root
+        this.sinkDown(0);
   
         return min;
     }
 
     size() {
         return this.array.length;
+    }
+
+    remove(val) {
+        let arr = this.array;
+        let removeIdx = null;
+
+        // Linear time approach
+        for (let i = 0; i < arr.length; i += 1) {
+            if (this.compareFunc(arr[i], val) === 0) removeIdx = i;
+        }
+
+        if (removeIdx === null) return;
+
+        this.swap(removeIdx, arr.length - 1);
+        let result = arr.pop();
+
+        // Handle if the removeIdx is the last index
+        if (removeIdx < arr.length) {
+            this.bubbleUp(removeIdx);
+            this.sinkDown(removeIdx);
+        }
+
+        return result;
     }
 
     /**
@@ -83,10 +116,9 @@ class Heap {
      * To fix bubbleUp and sinkDown
      * 
      */
-    bubbleUp() {
-        // Start from last index
+    bubbleUp(currIdx) {
         let arr = this.array;
-        let currIdx = arr.length - 1;
+
         while(currIdx > 0) {
             /**
              * [1,2,3] 1 as root 2 as left child and 3 as right child      
@@ -104,11 +136,9 @@ class Heap {
         } 
     }
   
-    sinkDown() {
-        // Start from root index
+    sinkDown(currIdx) {
         let arr = this.array;
         let len = arr.length;
-        let currIdx = 0;
         let val = arr[currIdx]
   
         while(true) {
@@ -143,9 +173,9 @@ heap.push(5);
 heap.push(4);
 
 console.log(heap.size()); // 5
+console.log(heap.remove(3)); // 3
 console.log(heap.pop()); // 5
 console.log(heap.pop()); // 4
-console.log(heap.pop()); // 3
 console.log(heap.pop()); // 2
 console.log(heap.pop()); // 1
 console.log(heap.pop()); // null
