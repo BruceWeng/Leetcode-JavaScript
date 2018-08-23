@@ -45,3 +45,22 @@ const climbStairs = function(n) {
   // 3. Return stage in last stage
   return stages[n];
 };
+
+/**
+ * Rolling Array
+ */
+const climbStairs = function(n) {
+  
+  // 1. Initiate stages array
+  let stages = [0, 1, 2];
+
+  if (n <= 2) return stages[n];
+    
+  // 2. Update state in each stages
+  for (let i = 3; i <= n; i += 1) {
+    stages[i % 3] = stages[(i - 1) % 3] + stages[(i - 2) % 3];
+  }
+  
+  // 3. Return stage in last stage
+  return stages[n % 3];
+};
