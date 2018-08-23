@@ -14,11 +14,14 @@ Output:
 [5,6]
  */
 /**
- * Algorithm: No missing numbers, each element and index should be one-to-many relationship
+ * Algorithm: Flip Index-Value
+ * No missing numbers, each element and index should be one-to-many relationship
  * 0. Filter the relationship with exsiting numbers
  * 1. Consider num as an index. Iterate nums and mark all positions of index(nums[i]) into negative
  * 2. Iterate in range(0, nums.length), if nums[i] > 0, result.push(i + 1)
  * 3. return result
+ * 
+ * Related: 442. Find All Duplicates in an Array
  */
 /**
  * @param {number[]} nums
