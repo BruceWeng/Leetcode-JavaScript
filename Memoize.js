@@ -8,8 +8,8 @@
 /**
  * Memoize
  * 
- * @param {Function} pure function
- * @return {Function}
+ * @param {Function} fn (have to be pure function)
+ * @return {Function} with cache
  */
 const memoize = function(fn) {
   // 1. Declare a cache
