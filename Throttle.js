@@ -33,5 +33,7 @@ const throttle = function(fn, limit) {
         limit
       );
     }
+
+    // 4. If the function is waiting, do nothing
   }
 }
