@@ -24,7 +24,9 @@ const memoize = function(fn) {
     } 
     // 5. If not calculated, use fn to calculate and store the value in cache
     else {
-      let value = fn(n);
+      // 6. Use fn.call(this, n) instead of fn(n) in case 'this' in fn 
+      // is undefined (because fn is passed in a function)
+      let value = fn.call(this, n);
       cache[n] = value;
       return value;
     }
