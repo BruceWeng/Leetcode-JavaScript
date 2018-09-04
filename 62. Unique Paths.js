@@ -26,13 +26,13 @@ Output: 28
  */
 /**
  * Algorithm: DP
- * 1. stages[i][j] = stages[i][j-1] + stages[i-1][j] 
+ * 1. stages[i][j] = stages[i][j-1] (left) + stages[i-1][j] (top)
  * 2. Boundary conditions: 
  *    a. leftmost col stages[i][0] = 1
  *    b. uppermost row stages[0][j] = 1
  * 3. for i in range(1, rows):
  *      for j in range(1, cols):
- *        stages[i][j] = stages[i][j-1] + stages[i-1][j]
+ *        stages[i][j] = stages[i][j-1] (left) + stages[i-1][j] (top)
  * 4. Return the last state in last stage stage[m-1][n-1]
  * 5. T: O(m*n), S: O(m*n)
  */
@@ -51,8 +51,8 @@ Output: 28
  */
 /**
  * Algorithm: DP, rolling state array
- * 1. Note the preStage[i] is the same as currStage[i], no need for preStage array
- * 2. currStage[i] = currStage[i] + currStage[i-1]
+ * 1. Note the preStage[j] is the same as currStage[j], no need for preStage array
+ * 2. currStage[j] = currStage[j] (prev stage) + currStage[j-1] (prev state)
  * 3. return currStage[n-1]
  * 4. T: O(m*n), S:(n)
  */
