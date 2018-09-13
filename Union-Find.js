@@ -24,12 +24,12 @@
 /**
  * Pseudo code:
  * class UnionFindSet:
- *   func UnionFIndSet(n):
+ *   func UnionFindSet(n):
  *     parents = [1...n]
  *     ranks = [0...0]
  * 
  *   func Find(x):
- *     if x != parents[x]
+ *     if x != parents[x]:
  *       parents[x] = Find(parents[x])
  *     return parents[x]
  * 
