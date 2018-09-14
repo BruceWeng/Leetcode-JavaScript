@@ -42,3 +42,56 @@
  *       parents[rootY] = rootX
  *       ranks[rootX] += 1
  */
+class UnionFindSet {
+  constructor(n) {
+    this._parents = new Array(n);
+    this._ranks = new Array(n);
+    for (let i = 0; i < this._parents.length; i += 1) {
+      this._parents[i] = i;
+      this._ranks[i] = i;
+    }
+  }
+
+  /**
+   * Find u and set u's parent to root of the set
+   * 
+   * @param {number} u 
+   */
+  find(u) {
+    while (this._parents[u] !== u) {
+      this._parents[u] = this._parents[this._parents[u]];
+      u = this._parents[u];
+    }
+
+    return u;
+
+    // if (this._parents[u] === u) return u;
+    // this._parents[u] = find(u); // path compression
+    // return this._parents[id];
+  }
+
+  /**
+   * If u and v are connected, return true, else return false 
+   * 
+   * @param {number} u 
+   * @param {number} v 
+   * @return {boolean}
+   */
+  union(u, v) {
+    let parent_u = this.find(u);
+    let parent_v = this.find(v);
+
+    if (parent_u === parent_v) return true;
+
+    if (this._ranks[parent_v] > this._ranks[parent_u])
+      this._parents[parent_u] = parent_v;
+    else if (this._ranks[parent_u] > this._ranks[parent_v])
+      this._parents[parent_v] = parent_u;
+    else {
+      this._parents[parent_v] = parent_u;
+      this._ranks[parent_u] += 1;
+    }
+
+    return false;
+  }
+}
