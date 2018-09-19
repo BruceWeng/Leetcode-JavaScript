@@ -46,7 +46,7 @@ class Solution {
       // ex: there is 3 nodes, generate random number in 0, 1, 2
       // if it is 2, replace result to new node.val
       // Remember to use Math.floor since random returns a floating number
-      if (Math.floor(Math.random() * (i+1)) === i) 
+      if (Math.floor(Math.random() * (i+1)) === i) // <- the random result could be either (0 - i)
         result = curr.val;
     }
     
