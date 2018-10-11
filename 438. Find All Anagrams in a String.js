@@ -35,8 +35,6 @@ const findAnagrams = function(s, p) {
   let counter = map.size;
   let start = 0;
   let end = 0;
-  let head = 0;
-  let len = Number.MAX_SAFE_INTEGER;
 
   while (end < s.length) {
     let char = s[end];
