@@ -42,3 +42,30 @@ var isAnagram = function(s, t) {
 
     return true;
 };
+
+/**
+ * @param {string} s
+ * @param {string} t
+ * @return {boolean}
+ */
+let isAnagram = function(s, t) {
+    let map = {};
+    for (let char of s) {
+      if (char in map) map[char] += 1;
+      else map[char] = 1;
+    }
+  
+    for (let char of t) {
+      if (char in map) map[char] -= 1;
+      else return false;
+    }
+  
+    for (let key in map) {
+      if (map[key] !== 0) return false;
+    }
+  
+    return true;
+  };
+  
+  console.log(isAnagram("anagram", "nagaram")); // true
+  console.log(isAnagram("rat", "car")); // false
