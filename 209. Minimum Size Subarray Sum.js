@@ -13,15 +13,15 @@ const minSubArrayLen = function(s, nums) {
 
   let len = nums.length;
   let start = 0;
-  let end = 0;
+  let end = -1;
   let sum = 0;
   let result = len + 1;
   while (end < len) {
-    sum += nums[end];
     end += 1;
+    sum += nums[end];
 
     while (sum >= s) {
-      result = Math.min(result, end - start);
+      result = Math.min(result, end - start + 1);
       sum -= nums[start];
       start += 1;
     }
