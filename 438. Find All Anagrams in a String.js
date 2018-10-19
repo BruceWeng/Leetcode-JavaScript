@@ -40,15 +40,15 @@ const findAnagrams = function(s, p) {
     end += 1;
     let char = s[end];
     if (map.has(char)) {
-      map.set(char, map.get(char) - 1);
+      map.set(char, map.get(char) - 1); // map[char] -= 1
       if (map.get(char) === 0) counter -= 1;
     }
 
     while (counter === 0) {
       let tempChar = s[start];
       if (map.has(tempChar)) {
-        map.set(tempChar, map.get(tempChar) + 1);
-        if (map.get(tempChar) > 0) {
+        map.set(tempChar, map.get(tempChar) + 1); // map[tempChar] += 1
+        if (map.get(tempChar) > 0) { // map[tempChar] > 0
           counter += 1;
         }
       }
