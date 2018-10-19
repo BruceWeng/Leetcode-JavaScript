@@ -38,32 +38,45 @@ var numIslands = function(grid) {
   let m = grid.length;
   let n = grid[0].length;
   let result = 0;
+  const direction = [ [-1, 0], [0, 1], [1, 0], [0, -1]];
 
-  for (let i = 0; i < m; i++) {
-    for (let j = 0; j < n; j++) {
-      if (grid[i][j] !== '1') {
-        continue;
+  for (let i = 0; i < m; i += 1) {
+    for (let j = 0; j < n; j += 1) {
+      if (grid[i][j] === '1') {
+        result += 1;
+        traverse(i, j);
       }
-
-      result++;
-      traverse(i, j);
-    }
-  }
-
-  function traverse(y, x) {
-    if (y < 0 || y >= m || x < 0 || x >= n) {
-      return;
-    }
-
-    if (grid[y][x] === '1') {
-      grid[y][x] = '2';
-
-      traverse(y + 1, x);
-      traverse(y - 1, x);
-      traverse(y, x + 1);
-      traverse(y, x - 1);
     }
   }
 
   return result;
+
+  /**
+   * Mark all neighbor grids
+   * 
+   * @param {Number} i 
+   * @param {Number} j 
+   */
+  function traverse(i, j) {
+    if (i < 0 || i >= m || j < 0 || j >= n) return;
+
+    if (grid[i][j] === '1') {
+      grid[i][j] = '2';
+
+      for (let dir of direction) {
+        let next_i = i + dir[0];
+        let next_j = j + dir[1];
+        traverse(next_i, next_j);
+      }
+    }
+  }
 };
+
+const test1 = [ ['1', '1', '0', '0', '0'],
+                ['1', '1', '0', '0', '0'],
+                ['0', '0', '1', '0', '0'],
+                ['0', '0', '0', '1', '1'] ];
+// console.log(numIslands(test1)); // 3
+
+const test2 = [["1","1","1"],["0","1","0"],["1","1","1"]]
+console.log(numIslands(test2)); // 1
