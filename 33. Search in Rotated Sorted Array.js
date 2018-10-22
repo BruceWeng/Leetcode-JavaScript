@@ -70,3 +70,54 @@ var search = function(nums, target) {
 };
 let test1 = [3, 5, 1];
 console.log(search(test1, 1));// 1
+
+/**
+ * Leetcode Fundamental: 10/22 Update
+ */
+/**
+ * @param {number[]} nums
+ * @param {number} target
+ * @return {number}
+ */
+var search = function(nums, target) {
+  // Let start and end in the range boundary of binary search [start...end] (include target)
+  let start = 0;
+  let end = nums.length - 1;
+  // while loop condition: 
+  // Edge condition: the range[start...end] is size 2 and they happens to be the break point where nums[start] > nums[end],
+  // still valid to reduce range to find the target without missing elements
+  // true condition: while (start <= end)
+  while (start <= end) {
+    let mid = start + Math.floor((end - start) / 2);
+    if (nums[mid] === target) return mid;
+    
+    if (target >= nums[0]) {
+      if (nums[mid] >= nums[0]) {
+        if (nums[mid] > target) end = mid - 1;
+        else start = mid + 1;
+      }
+      else end = mid - 1;
+    } 
+    else if (target < nums[0]) {
+      if (nums[mid] < nums[0]) {
+        if (nums[mid] > target) end = mid - 1;
+        else start = mid + 1;
+      }
+      else start = mid + 1;
+    }
+  }
+  // the case that find the target: return mid
+  // the target can either be in LHS: target >= nums[0]:
+  // 1. if nums[mid] is in RHS (nums[mid] < nums[0]): end = mid-1
+  // 2. if nums[mid] is in LHS (nums[mid] >= nums[0]): 
+  //    if (nums[mid] > target): end = mid-1
+  //    else: start = mid+1
+  // the target be in RHS: target < nums[0]
+  // 1. if nums[mid] is in LHS (nums[mid] >= nums[0]): start = mid+1
+  // 2. if nums[mid] is in RHS (nums[mid] < nums[0]):
+  //    if (nums[mid] > target): end = mid-1
+  //    else: start = mid+1
+  
+  // handle target not found case
+  return -1;
+};
