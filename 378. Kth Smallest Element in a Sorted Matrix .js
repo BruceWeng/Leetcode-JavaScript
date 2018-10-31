@@ -21,6 +21,8 @@ You may assume k is always valid, 1 ≤ k ≤ n2.
  * 
  * Failure:
  * Fail to think of using extra variable count to track the amount of elements < k
+ * 
+ * T: O(nlog(max - min)), S: O(1)
  */
 /**
  * @param {number[][]} matrix
