@@ -20,6 +20,8 @@ You may assume k is always valid, 1 ≤ k ≤ array's length.
  * 3. Fail to think of comparing k and partitionIndex in binary search
  * 
  * Without shuffle nums: T: O(n^2), S: O(1)
+ * With shuffle nums: T: O(n), O(1)
+ * 384. Shuffle an Array: Reservoir Sampling
  */
 /**
  * @param {number[]} nums
@@ -27,6 +29,7 @@ You may assume k is always valid, 1 ≤ k ≤ array's length.
  * @return {number}
  */
 var findKthLargest = function(nums, k) {
+  nums = shuffle(nums);
   let kth = nums.length - k;
   let left = 0;
   let right = nums.length - 1;
@@ -60,3 +63,13 @@ const partition = (nums, pivot, left, right) => {
 const swap = (nums, a, b) => {
   [ nums[a], nums[b] ] = [ nums[b], nums[a]];
 };
+
+const shuffle = (nums) => {
+  if (nums.length < 2) return nums;
+  for (let j = 1; j < nums.length; j += 1) {
+    let i = Math.floor(Math.random() * (j+1));
+    swap(nums, i, j);
+  }
+
+  return nums;
+}
