@@ -5,6 +5,7 @@
  * I passed 0 as left and nums.length - 1 as right
  * Remember each sortHelper call reduce the partition range
  * 2. Fail to return nums at the end of sortHelper func
+ * 3. PartitionIndex is easy typo
  */
 /**
  * Quick Sort
