@@ -30,7 +30,7 @@ const quickSort = function(nums) {
  */
 const sortHelper = function(nums, left, right) {
   if (left < right) {
-    let pivot = right;
+    let pivot = right; // Pivot has to be right in this implementation
     let partitionIndex = partition(nums, pivot, left, right); 
     // PartitionIndex is the final position
     // No need to include the position in recursive calls
