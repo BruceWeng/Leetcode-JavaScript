@@ -50,7 +50,10 @@ var kthSmallest = function(matrix, k) {
   let end = matrix[m-1][n-1];
   
   while (start <= end) {
+    console.log(`start: ${start}`);
+    console.log(`end: ${end}`);
     let mid = start + Math.floor((end - start) / 2);
+    console.log(`mid: ${mid}`);
     let count = 0;
     let col = n - 1;
     
@@ -62,6 +65,8 @@ var kthSmallest = function(matrix, k) {
       // 1. the amount of entire row
       // 2. number of elements <= mid in specific row
       count += col + 1;
+      console.log(`count: ${count}`);
+      console.log(`----------`);
     }
     
     // Handle case that need to move start bound
@@ -72,3 +77,7 @@ var kthSmallest = function(matrix, k) {
   
   return start;
 };
+
+const test = [[1, 5], [5, 5], [6, 6]];
+const k = 3;
+console.log(kthSmallest(test, k));
