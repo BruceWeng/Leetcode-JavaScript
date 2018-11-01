@@ -1,60 +1,81 @@
 /**
+ * Leetcode Fundamentals: 11/1 Update
+ * Failure:
+ * 1. Fail to pass left and right as boundary in sortHelper
+ * I passed 0 as left and nums.length - 1 as right
+ * Remember each sortHelper call reduce the partition range
+ * 2. Fail to return nums at the end of sortHelper func
+ */
+/**
  * Quick Sort
  * 
  * T: O(nlogn) in average, O(n^2) for non partitioned, S: O(1)
- * @param {array} arr
+ * @param {array} nums
  * @return {array} sorted array
  */
-const quickSort = function(arr) {
+const quickSort = function(nums) {
   // Array of length 0 or 1 are sorted by definition.
-  if (arr.length < 2) return arr;
+  if (nums.length < 2) return nums;
 
-  return sortHelper(arr, 0, arr.length-1);
+  return sortHelper(nums, 0, nums.length-1);
 }
 
 /**
  * Quick Sort helper function
  * (right index is included boundary)
- * @param {array} arr 
+ * @param {array} nums 
  * @param {array} left 
  * @param {array} right 
  * @return {array} sorted array
  */
-const sortHelper = function(arr, left, right) {
+const sortHelper = function(nums, left, right) {
   if (left < right) {
     let pivot = right;
-    let partitionIndex = partition(arr, pivot, left, right);
+    let partitionIndex = partition(nums, pivot, left, right); 
+    // PartitionIndex is the final position
+    // No need to include the position in recursive calls
 
-    sortHelper(arr, left, partitionIndex-1);
-    sortHelper(arr, partitionIndex+1, right);
+    sortHelper(nums, left, partitionIndex-1);
+    sortHelper(nums, partitionIndex+1, right);
   }
 
-  return arr;
+  return nums;
 }
 
 /**
  * Partition function
- * @param {array} arr 
+ * @param {array} nums 
  * @param {number} pivot 
  * @param {number} left 
  * @param {number} right 
  * @return {number} partitionIndex
  */
-const partition = function(arr, pivot, left, right) {
-  let pivotValue = arr[pivot];
-  let partitionIndex = left;
+const partition = function(nums, pivot, left, right) {
+  let pivotValue = nums[pivot];
+  let partitionIndex = left; // The first index that arr[partitionIndex] >= pivotValue
 
   for (let i = left; i < right; i += 1) {
-    if (arr[i] < pivotValue) {
-      // swap
-      [arr[i], arr[partitionIndex]] = [arr[partitionIndex], arr[i]];
+    if (nums[i] < pivotValue) {
+      // swap nums[i] and nums[partitionIndex]
+      swap(nums, i, partitionIndex);
       partitionIndex += 1;
     }
   }
 
-  // swap
-  [arr[right], arr[partitionIndex]] = [arr[partitionIndex], arr[right]];
+  // swap nums[pivot] and nums[partitionIndex]
+  swap(nums, pivot, partitionIndex);
   return partitionIndex;
+}
+
+/**
+ * Swap nums[a] and nums[b] in place
+ * 
+ * @param {Array} nums 
+ * @param {Number} a 
+ * @param {Number} b 
+ */
+const swap = (nums, a, b) => {
+  [nums[a], nums[b]] = [nums[b], nums[a]];
 }
 
 let test1 = [1];
