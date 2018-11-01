@@ -17,6 +17,15 @@ solution.reset();
 solution.shuffle();
  */
 /**
+ * Leetcode Fundamentals: 11/1 Update
+ * Proof:
+ * Let i be index in range [0...j] and each probability is 1/(1+j)
+ * 1. if i === j, no need to change its position: P: 1/(1+j)
+ * 2. if i !== j (P: j/(j+1) ), choose another value in range [0...j-1] (P: 1/j )
+ *    Total: P: (j/j+1) * (1/j) = 1/(j+1)
+ * Each value has equal probability at any position
+ */
+/**
  * Algorithm: Reservoir Sampling
  */
 class Solution {
@@ -40,7 +49,7 @@ class Solution {
     if (this.nums == null) return null;
     let numsCopy = [...this.nums];
     for (let j = 1; j < numsCopy.length; j += 1) {
-      let i = Math.floor(Math.random() * (j+1));
+      let i = Math.floor(Math.random() * (j+1)); // i: index in range[0...j], each probability is 1/(1+j)
       this.swap(numsCopy, i, j);
     }
 
