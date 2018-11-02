@@ -141,7 +141,7 @@ function Heap(compareFunc) {
     while (currIndex > 0) {
       let parentIndex = Math.floor((currIndex + 1) / 2) - 1;
 
-      if (shouldSwap(nums[parentIndex], nums[currIndex])) break;
+      if (moreProper(nums[parentIndex], nums[currIndex])) break;
       swap(nums, parentIndex, currIndex);
       currIndex = parentIndex;
     }
@@ -154,11 +154,11 @@ function Heap(compareFunc) {
       let LChildIndex = RChildIndex - 1;
 
       if (LChildIndex < nums.length && 
-          shouldSwap(nums[LChildIndex], nums[currIndex])) swapIndex = LChildIndex;
+          moreProper(nums[LChildIndex], nums[currIndex])) swapIndex = LChildIndex;
 
       if (RChildIndex < nums.length && 
-          shouldSwap(nums[RChildIndex], nums[currIndex]) && 
-          shouldSwap(nums[RChildIndex], nums[LChildIndex])) swapIndex = RChildIndex;
+          moreProper(nums[RChildIndex], nums[currIndex]) && 
+          moreProper(nums[RChildIndex], nums[LChildIndex])) swapIndex = RChildIndex;
 
       if (swapIndex === null) break;
 
@@ -167,7 +167,7 @@ function Heap(compareFunc) {
     }
   }
 
-  const shouldSwap = (a, b) => compare(a, b) < 0;
+  const moreProper = (a, b) => compare(a, b) < 0;
 
   return {
     peek,
