@@ -70,7 +70,7 @@ function Heap(compareFunc) {
     }
   }
 
-  const shouldSwap = (a, b) => compareFunc(a, b) < 0;
+  const shouldSwap = (a, b) => compare(a, b) < 0;
 
   return {
     peek,
