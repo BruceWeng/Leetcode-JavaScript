@@ -22,7 +22,10 @@ You may assume k is always valid, 1 ≤ k ≤ n2.
  * Failure:
  * Fail to think of using extra variable count to track the amount of elements < k
  * 
- * T: O(nlog(max - min)), S: O(1)
+ * Gain from DingDing:
+ * 1. Always think about the limitation
+ * 2. Find the condition boundary that this algorithm works
+ * T: max(O(nlogn), O(nlog(max - min)), S: O(1), Binary Search base on int
  */
 /**
  * @param {number[][]} matrix
@@ -65,14 +68,22 @@ var kthSmallest = function(matrix, k) {
       // 1. the amount of entire row
       // 2. number of elements <= mid in specific row
       count += col + 1;
+      console.log(`row: ${row}`);
+      console.log(`col: ${col}`);
       console.log(`count: ${count}`);
       console.log(`----------`);
     }
     
     // Handle case that need to move start bound
-    if (count < k) start = mid + 1;
+    if (count < k) {
+      console.log(`count < k: start = mid + 1`);
+      start = mid + 1;
+    }
     // Handle case that needto move end bound
-    else end = mid - 1;
+    else {
+      console.log(`count >= k: end = mid - 1`);
+      end = mid - 1;
+    }
   }
   
   return start;
@@ -80,4 +91,12 @@ var kthSmallest = function(matrix, k) {
 
 const test = [[1, 5], [5, 5], [6, 6]];
 const k = 3;
-console.log(kthSmallest(test, k));
+const test1 = [[1, 5, 8],
+               [20, 26, 29],
+               [33, 9936, 10000]];
+const k1 = 8;
+const test2 = [[1, 5, 8],
+               [7, 26, 29],
+               [24, 9936, 10000]];
+const k2 = 8;
+console.log(kthSmallest(test2, k2));
