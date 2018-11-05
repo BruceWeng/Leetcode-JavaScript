@@ -88,7 +88,10 @@ function preorder_iteration(root) {
 
     if (curr.operation === 1) {
       console.log(curr.node.value);
-    } else {
+    } 
+    // Put what to do next for the nodes in stack in reversed order
+    // Execution order is in reversed way
+    else {
       stack.push(new Guide(0, curr.node.right));
       stack.push(new Guide(0, curr.node.left));
       stack.push(new Guide(1, curr.node));

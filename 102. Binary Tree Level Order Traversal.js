@@ -9,6 +9,17 @@
  * Note:
  *  1. Important BFS template using queue and extra array
  */
+/**
+ * Leetcode Fundamental: 11/4 Update
+ * Failure:
+ * 1. Fail to think of using extra level array 
+ *    and iterate queue to push node.val to result
+ *    in for loop
+ * 2. Fail to memo queue.length to level size first in each iteration
+ *    (Since queue.length is dynamic)
+ * 3. Fail to handle root === null and return [] rather than return [[]]
+ * 4. Fail to shift currNode in for loop
+ */
 
  function TreeNode(val) {
    this.val = val;
