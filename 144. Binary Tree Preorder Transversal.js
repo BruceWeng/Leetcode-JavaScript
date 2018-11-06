@@ -110,3 +110,42 @@ root.right.right = new TreeNode("G");
 // dfs(root); //1, 2, 4, 5, 3, 6, 7
 console.log(dfs_recursion(root));
 // preorder_iteration(root);
+
+/**
+ * Leetcode Fundamental: 11/5 Update
+ */
+/**
+ * 
+ * @param {number} action 
+ * @param {TreeNode} node 
+ */
+function Command(action, node) {
+  return {
+    action, // 0: visit, 1: push to result
+    node
+  }
+}
+/**
+ * @param {TreeNode} root
+ * @return {number[]}
+ */
+var preorderTraversal = function(root) {
+  if (root === undefined || root === null) return [];
+  let result = [];
+  let stack = [Command(0, root)];
+  while (stack.length !== 0) {
+    let curr = stack.pop();
+        
+    if (curr.action === 1) {
+      result.push(curr.node.val);
+      continue;
+    }
+    
+    // Put next action for nodes in reversed order (1. Push curr node, 2. Visit left node, 3. Visit right node)
+    if (curr.node.right !== null) stack.push(Command(0, curr.node.right));
+    if (curr.node.left !== null) stack.push(Command(0, curr.node.left));
+    stack.push(Command(1, curr.node));
+  }
+  
+  return result;
+};
