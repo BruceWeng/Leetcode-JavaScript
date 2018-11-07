@@ -44,3 +44,23 @@ const twoSum = function(numbers, target) {
     
     return result;
 };
+/**
+ * Leetcode Fundamental: 11/6 Update
+ */
+/**
+ * @param {number[]} numbers
+ * @param {number} target
+ * @return {number[]}
+ */
+var twoSum = function(numbers, target) {
+    if (numbers === undefined || numbers.length === 0 || target === undefined) return [];
+    let left = 0;
+    let right = numbers.length - 1;
+    while (left < right) {
+      if (numbers[left] + numbers[right] < target) left += 1;
+      else if (numbers[left] + numbers[right] > target) right -= 1;
+      else return [left+1 , right+1];
+    }
+    
+    return [];
+  };
