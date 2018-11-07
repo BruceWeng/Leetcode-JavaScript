@@ -45,23 +45,37 @@ Algorithm2: 3 Ways Quick Select Partition
       swap(num, nums[zero+1])
       zero += 1
  */
+/**
+ * Leetcode Fundamental: 11/6 Update
+ * Failure:
+ * Fail to think of finding non-one element and move to its final position
+ */
 const sortColors = (nums) => {
-  let zero = -1;
-  let two = nums.length;
-  for (let i = 0; i < two; ) {
+  let zero = 0; // inclusive
+  let two = nums.length - 1; // inclusive
+  let i = 0;
+  while (i <= two) { // i has to <= two since two and i are possible be equal and we miss one swap
+    // Find first non-one position
     if (nums[i] === 1) i += 1;
+    // if nums[i] === 2, move it to last two position
     else if (nums[i] === 2) {
-      swap(nums, i, two-1);
+      swap(nums, i, two);
       two -= 1;
     } 
+    // if nums[i] === 0, move it to first zero position
     else {
-      swap(nums, i, zero+1);
+      swap(nums, i, zero);
       zero += 1
-      i += 1
+      i += 1 // Increment i to find next one
     }
   }
+
+  return nums;
 }
 
 const swap = (nums, i, j) => {
   [nums[i], nums[j]] = [nums[j], nums[i]];
 }
+
+const test = [2,0,2,1,1,0];
+console.log(sortColors(test)); // [0,0,1,1,2,2]
