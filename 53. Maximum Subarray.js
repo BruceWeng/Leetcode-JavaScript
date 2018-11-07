@@ -37,8 +37,44 @@ const maxSubArray = function(nums) {
     
   // Transfer states
   for (let i = 1; i < nums.length; i += 1) {
-    sum[i] = Math.max(nums[i], nums[i] + sum[i-1]);
+    sum[i] = Math.max(nums[i], sum[i-1] + nums[i]);
     result = Math.max(result, sum[i]);
   }
+  return result;
+};
+
+const test = [-2,1,-3,4,-1,2,1,-5,4];
+console.log(maxSubArray(test));
+/**
+ * Leetcode Fundamental: 11/7 Update
+ * Failure:
+ * 1. Fail to think of two stage DP
+ * 2. Here is another solution without prefix sum
+ * 
+ * stage1: nums    [-2, 1,-3,4,-1,2,1,-5,4]
+ * stage2: max sum [-2, 0, 0,0, 0,0,0, 0,0] (Sum up sum[i-1] only if sum[i-1] > 0)
+ * update stage2: 
+ * if sum[i-1] > 0: sum[i] = sum[i-1] + nums[i]
+ * else sum[i] = nums[i]
+ * 
+ * result = max(result, stage2[i])
+ * 
+ * T: O(n), S: O(n) (can be reduced to O(1) since we only need previous sum[i-1] to update sum[i])
+ * Optimize with circular array by 
+ * FIND THE TARGET INDEX then % array.length
+ */
+const maxSubArray = (nums) => {
+  if (nums === undefined || nums.length === 0) return 0;
+  // nums is stage1
+  let stage2 = Array(2).fill(0);
+  stage2[0] = nums[0];
+  let result = stage2[0];
+  for (let i = 1; i < nums.length; i += 1) {
+    if (stage2[(i - 1) % 2] < 0) stage2[i % 2] = nums[i];
+    else stage2[i % 2] = stage2[(i - 1) % 2] + nums[i];
+
+    result = Math.max(result, stage2[(i % 2)]);
+  }
+
   return result;
 };
