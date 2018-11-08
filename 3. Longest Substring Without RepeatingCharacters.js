@@ -66,3 +66,38 @@ var lengthOfLongestSubstring = function(s) {
     
     return result;
   };
+/**
+ * Leetcode Fundamental: 11/8 Update
+ * 
+ * Using Set to maintain valid elements in the interval
+ * if nums[end] not in set:
+ *   a. add it in and increment end
+ *   b. update result = max(result, set.size) <- Awesome move!
+ * else: remove nums[start] from set, start += 1
+ * 
+ * return result
+ * 
+ * Inspired by 219. Contains Duplicate II
+ */
+const lengthOfLongestSubstring = (s) => {
+  if (s === undefined || s.length === 0) return 0;
+
+  let start = 0;
+  let end = 0;
+  let result = 0;
+  let set = new Set();
+  
+  while (end < s.length) {
+    if (!set.has(s[end])) {
+      set.add(s[end]);
+      end += 1;
+      result = Math.max(result, set.size);
+    }
+    else {
+      set.delete(s[start]);
+      start += 1;
+    }
+  }
+
+  return result;
+};
