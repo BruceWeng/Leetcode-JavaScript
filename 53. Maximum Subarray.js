@@ -20,6 +20,10 @@ conquer approach, which is more subtle.
  * 3. If stage[i-1] > 0: stage[i] = nums[i] + stage[i-1]
  * 4. If stage[i] > result: result = stage[i]
  * 5. Return result
+ * 
+ * Update 11/8:
+ * Prefix sum is the sliding window for "subarray sum kind" problem
+ * sum[start...end] can be derived prefix[end] - prefix[start-1] 
  */
 /**
  * @param {number[]} nums

@@ -8,12 +8,12 @@ The range of numbers in the array is [-1000, 1000] and the range of the integer 
  */
 /**
  * Algorithm: PrefixSum + 2 Sum using Hash
- * 1. Create prefix sum by hashMap<sum[0, i-1], frequency>
+ * 1. Create prefix sum by hashMap<sum[0, i-1], count>
  * 2. sum[i, j] = sum[0, j] - sum[0, i-1] --> sum[0, i-1] = sum[0, j] - sum[i, j]
  *        k          sum      hashMap-key     hashMap-key      sum          k
  * 3. Why don't map.put(sum[0, i - 1], 1) every time ?
         if all numbers are positive, this is fine
-        if there exists negative number, there could be preSum frequency > 1
+        if there exists negative number, there could be preSum count > 1
  */
 /**
  * @param {number[]} nums
@@ -45,3 +45,29 @@ const subarraySum = function(nums, k) {
 };
 
 console.log(subarraySum([1,1,1], 2)); // 2
+/**
+ * Leetcode Fundamental: 11/8 Update
+ * Failure:
+ * 1. Fail to think of using hashmap storing count
+ * 2. Fail to use only one variable preSum to store prefix sum(rather than prefixSum[])
+ */
+const subarraySum = (nums, k) => {
+  if (nums === undefined || nums.length === 0 || k === undefined) return 0;
+
+  let map = {
+    0: 1 // key: preSum, value: count
+  }; 
+
+  let preSum = 0;
+  let result = 0;
+  for (let num of nums) {
+    preSum += num;
+    // Update result
+    if ((preSum - k) in map) result += map[preSum - k];
+    // Update map
+    if (!(preSum in map)) map[preSum] = 1;
+    else map[preSum] += 1;
+  }
+
+  return result;
+};
