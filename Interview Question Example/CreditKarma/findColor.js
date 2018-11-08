@@ -32,15 +32,15 @@ function findColor(searchTerm, colors) {
 //   s
 // 
   
-console.log(findColor('ua', colors))
+// console.log(findColor('ua', colors))
 
-console.log(findColor('uqi', colors))
+// console.log(findColor('uqi', colors))
 // [ 'darkturquoise', 'mediumaquamarine', 'mediumturquoise', 'paleturquoise', 'turquoise' ]
 
-console.log(findColor('zre', colors))
+// console.log(findColor('zre', colors))
 // [ 'azure' ]
 
-console.log(findColor('gold', colors))
+// console.log(findColor('gold', colors))
 // [ 'darkgoldenrod', 'gold', 'goldenrod', 'lightgoldenrodyellow', 'palegoldenrod' ]
 
 
@@ -75,10 +75,10 @@ console.log(findColor('gold', colors))
   * Still can not handle order problem
   */
  function ColorMap(color) { 
-   let map = new Map();
+   let map = {};
    for (let c of color) { // O(maxlen(color))
-     if (map.has(c)) map.set(c, map.get(c) + 1);
-     else map.set(c, 1);
+     if (c in map) map[c] += 1;
+     else map[c] = 1;
    }
    return {
      word: color,
@@ -99,16 +99,16 @@ console.log(findColor('gold', colors))
 
    for (let colorMap of colorMaps) { // O(n)
      for (let c of searchTerm) { // O(len(searchTerm))
-       if (!colorMap.map.has(c)) break;
-       else colorMap.map.set(c, colorMap.map.get(c) - 1);
+       if (!(c in colorMap.map)) break;
+       else colorMap.map[c] -= 1;
      }
    }
 
    let remainingChar = 0;
    for (let colorMap of colorMaps) { // O(n)
      remainingChar = 0;
-     for (let [key, value] of colorMap.map) { // O(# unique char in searchTerm)
-       remainingChar += value;
+     for (let key in colorMap.map) { // O(# unique char in searchTerm)
+       remainingChar += colorMap.map[key];
      }
      if (remainingChar === colorMap.word.length - searchTerm.length) result.push(colorMap.word);
    }
@@ -118,11 +118,11 @@ console.log(findColor('gold', colors))
 
 //  console.log(findColor2('ua', colors))
 
-// console.log(findColor2('uqi', colors))
+console.log(findColor2('uqi', colors))
 // [ 'darkturquoise', 'mediumaquamarine', 'mediumturquoise', 'paleturquoise', 'turquoise' ]
 
-// console.log(findColor2('zre', colors))
+console.log(findColor2('zre', colors))
 // [ 'azure' ]
 
-// console.log(findColor2('gold', colors))
+console.log(findColor2('gold', colors))
 // [ 'darkgoldenrod', 'gold', 'goldenrod', 'lightgoldenrodyellow', 'palegoldenrod' ]
