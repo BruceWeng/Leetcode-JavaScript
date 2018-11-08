@@ -7,15 +7,16 @@ function findColor(searchTerm, colors) {
   // 1. empty inputs
   if (searchTerm === undefined || colors === undefined || colors.length === 0) return [];
   
-  // 1. Brute Force: T: O(len(array) * max*len(element) * len(searchString))
+  // 1. Brute Force: T: O(len(array) * maxlen(color)^2 * len(searchTerm))
   let result = [];
-  for (let color of colors) {
+  for (let color of colors) { // O(len(array))
     let start = 0; // (inclusive)
     let i = 0;
-    for (i = 0; i < searchTerm.length; i += 1) {
-      if (!color.slice(start).includes(searchTerm[i])) break;
+    for (i = 0; i < searchTerm.length; i += 1) { // O(len(searchTerm))
+      let nextStart = color.slice(start).indexOf(searchTerm[i]); // O(maxlen(color)^2)
+      if ( nextStart === -1) break; // cannot find searchTerm[i] in color.slice(start)
 
-      start = color.indexOf(searchTerm[i]);
+      start = nextStart;
     }
 
     if (i === searchTerm.length) result.push(color);
@@ -69,3 +70,59 @@ console.log(findColor('gold', colors))
    /
   null    
   */
+ /**
+  * Update with Color map
+  * Still can not handle order problem
+  */
+ function ColorMap(color) { 
+   let map = new Map();
+   for (let c of color) { // O(maxlen(color))
+     if (map.has(c)) map.set(c, map.get(c) + 1);
+     else map.set(c, 1);
+   }
+   return {
+     word: color,
+     map // key: character, value: frequency
+   }
+ }
+ // O(len(array) * maxlen(element))
+ const findColor2 = (searchTerm, colors) => {
+   if (searchTerm === undefined || colors === undefined || colors.length === 0) return [];
+   
+   let result = [];
+   let colorMaps = [];
+   for (let color of colors) { // O(n)
+     let colorMap = ColorMap(color); // O(maxlen(color))
+    //  console.log(colorMap);
+     colorMaps.push(colorMap);
+   }
+
+   for (let colorMap of colorMaps) { // O(n)
+     for (let c of searchTerm) { // O(len(searchTerm))
+       if (!colorMap.map.has(c)) break;
+       else colorMap.map.set(c, colorMap.map.get(c) - 1);
+     }
+   }
+
+   let remainingChar = 0;
+   for (let colorMap of colorMaps) { // O(n)
+     remainingChar = 0;
+     for (let [key, value] of colorMap.map) { // O(# unique char in searchTerm)
+       remainingChar += value;
+     }
+     if (remainingChar === colorMap.word.length - searchTerm.length) result.push(colorMap.word);
+   }
+
+   return result;
+ };
+
+//  console.log(findColor2('ua', colors))
+
+// console.log(findColor2('uqi', colors))
+// [ 'darkturquoise', 'mediumaquamarine', 'mediumturquoise', 'paleturquoise', 'turquoise' ]
+
+// console.log(findColor2('zre', colors))
+// [ 'azure' ]
+
+// console.log(findColor2('gold', colors))
+// [ 'darkgoldenrod', 'gold', 'goldenrod', 'lightgoldenrodyellow', 'palegoldenrod' ]
