@@ -27,6 +27,10 @@ function TreeNode(val) {
 }
 
 /**
+ * Leetcode Fundamental: 11/12 Update
+ * 64 ms
+ */
+/**
  * @param {TreeNode} root
  * @return {boolean}
  */
@@ -35,7 +39,7 @@ function isSymmetric(root) {
     return true;
   }
 
-  let queue = new Array();
+  let queue = [];
   queue.push(root);
 
   while(queue.length !== 0) {
@@ -45,6 +49,7 @@ function isSymmetric(root) {
     for (let i = 0; i < size; i++) {
       let head = queue.shift();
 
+      // Have to push null in level since we need to compare by reflection position 
       if (head === null) {
         level.push(null);
         continue;
@@ -57,6 +62,7 @@ function isSymmetric(root) {
       queue.push(head.right);
     }
 
+    // Check equality of first element and last element in level array
     for (let i = 0; i <= Math.floor(size); i++) {
       if (level[i] !== level[size - 1 - i]) {
         return false;
@@ -90,3 +96,26 @@ console.log(isSymmetric(test2)); //false
 let test3 = new TreeNode(3);
 
 console.log(isSymmetric(test3)); //true
+
+/**
+ * Leetcode Fundamental: 11/12 Update
+ * 60ms
+ * Failure:
+ * 1. Fail to use a helper func to pass left and right
+ */
+var isSymmetric = function(root) {
+  if (root === undefined) return false;
+  if (root === null) return true;
+  return isMirror(root.left, root.right);
+};
+
+const isMirror = (left, right) => {
+  // case 1 return true
+  if (left === null && right === null) return true;
+  if (left === null || right === null) return false;
+  // case 2 return true:
+  // 1. left.val === right.val
+  // 2. isMirror(left.left, right.right)
+  // 3. isMirror(left.right, right.left)
+  return (left.val === right.val && isMirror(left.left, right.right) && isMirror(left.right, right.left));
+};
