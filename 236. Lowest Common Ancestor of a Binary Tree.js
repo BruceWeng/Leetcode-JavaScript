@@ -88,10 +88,10 @@ var lowestCommonAncestor = function(root, p, q) {
 };
 
 /**
- * Iterative solution: Graph and BFS 11/12 Update
+ * Iterative solution: Graph and DFS 11/12 Update
  * 120 ms
  * 1. Use an edge hashmap to store child-parent relationship, key: child, value: parent
- * 2. Using BFS Keep adding edge to hashmap until both p and q are found
+ * 2. Using DFS Keep adding edge to hashmap until both p and q are found
  *    ( while (!edge.has(p) || !edge.has(q)) )
  * 3. Put all the parent node of p in a set
  * 4. Find all the parent node of q until q is in the set
