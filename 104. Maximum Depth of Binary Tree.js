@@ -24,6 +24,9 @@ return its depth = 3.
  * }
  */
 /**
+ * Recursive solution: 84ms
+ */
+/**
  * @param {TreeNode} root
  * @return {number}
  */
@@ -52,3 +55,35 @@ const maxDepth = function(root) {
   // 2. return instance variable
   return result;
 };
+
+/**
+ * Leetcode Fundamental: 11/12 Update
+ * 64ms
+ */
+var maxDepth = function(root) {
+  if (root === undefined || root === null) return 0;
+  let stack = [Command(root, 1)];
+  let result = 0;
+  while (stack.length !== 0) {
+    let { node, height } = stack.pop();
+    
+    result = Math.max(result, height);
+    
+    if (node.right !== null) {
+      stack.push(Command(node.right, height + 1));
+    }
+    
+    if (node.left !== null) {
+      stack.push(Command(node.left, height + 1));
+    }
+  }
+  
+  return result;
+};
+
+function Command(node, height) {
+  return {
+    node,
+    height
+  }
+}

@@ -62,6 +62,8 @@ var longestConsecutive = function(root) {
     let right = node.right;
     let left = node.left;
     
+    result = Math.max(result, len);
+
     if (right !== null) {
       let rightLen = (right.val === node.val + 1)? len + 1: 1;
       stack.push(Command(right, rightLen));
@@ -72,8 +74,6 @@ var longestConsecutive = function(root) {
       let leftLen = (left.val === node.val + 1)? len + 1: 1;
       stack.push(Command(left, leftLen));
     }
-
-    result = Math.max(result, len);
   }
 
   return result;
