@@ -62,7 +62,7 @@
 
        visited[node] = 1;
        if (graph.has(node)) {
-         for (let child of graph.get(node)) {
+         for (let child of graph.get(node)) { // iterate children
            if (dfs(child)) {
              return true;
            }
@@ -79,3 +79,69 @@
 
  let test2 = [[0, 1], [1, 0]];
  console.log(canFinish(2, test2));
+
+ /**
+  * Leetcode Fundamental: 11/14 Update
+  * 0. Directed Graph
+  * 1. Adjacency List: HashMap(parent node(number), children nodes(array))
+  * 2. Node States Array: index: node, value: 0-> unvisited(default), 1-> has cycle, -1-> not has cycle
+  * 3. Construct AdjList from prerequisites
+  * 4. Declare hasCycle helper func(node, adjList, state)
+  * 5. Iterate all nodes, if any of it has cycle, return false, else return true
+  * 
+  * T: O(n), S: AdjList: O(Edge), State: O(n), O(Edge + n)
+  * 72 ms
+  */
+ /**
+ * @param {number} numCourses
+ * @param {number[][]} prerequisites
+ * @return {boolean}
+ */
+var canFinish = function(numCourses, prerequisites) {
+  // Handle edge cases
+  if (numCourses === undefined || prerequisites === undefined) return false;
+  
+  if (numCourses === 0) return true;
+
+  // No dependency
+  if (prerequisites.length === 0 || prerequisites[0].length === 0) return true;
+
+  // Construct AdjList(build graph)
+  let adjList = {};
+  for (let edge of prerequisites) {
+    let parent = edge[1];
+    let child = edge[0];
+    if (parent in adjList) adjList[parent].push(child);
+    else adjList[parent] = [child];
+  }
+
+  // Initiate node states
+  let state = new Array(numCourses).fill(0);
+
+  // Iterate each node and check cycle
+  for (let i = 0; i < numCourses; i += 1) {
+    if (hasCycle(i, adjList, state)) return false;
+  }
+
+  return true;
+};
+
+const hasCycle = (node, adjList, state) => {
+  // Check node cycle state
+  if (state[node] === -1) return false;
+  if (state[node] === 1) return true;
+
+  // Update node cycle state
+  // Label to has cycle first(state[node] = 1), if recursively find any children have cycle -> return true
+  // else: reset state to has no cycle(state[node] = -1)
+  // return false;
+  state[node] = 1;
+  if (node in adjList) {
+    for (let child of adjList[node]) {
+      if (hasCycle(child, adjList, state)) return true;
+    }
+  }
+
+  state[node] = -1;
+  return false;
+};
