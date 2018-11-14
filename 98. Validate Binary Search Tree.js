@@ -81,3 +81,45 @@ const helper = function(node) {
     Math.max(node.val, right.maxValue),
     Math.min(node.val, left.minValue));
 };
+
+/**
+ * Leetcode Fundamental: 11/14 Update
+ * Failure:
+ * 1. Fail to get the min and max value in subtree
+ * 
+ * 2. true if min value in right subtree > curr.val and max value if left subtree < curr.val
+ * 3. max value: max(curr.val, curr.right.maxVal)
+ *    min value: min(curr.val, curr.left.minVal)
+ * 
+ * Runtime: 68 ms
+ */
+const isValidBST = (root) => {
+  if (root === undefined) return false;
+
+  return helper(root).isValid;
+};
+
+const helper = (node) => {
+  if (node === null) return Command(true, Number.MIN_SAFE_INTEGER, Number.MAX_SAFE_INTEGER);
+
+  let left = helper(node.left);
+  let right = helper(node.right);
+
+  // Handle false case
+  if (!left.isValid || !right.isValid) return Command(false, 0, 0);
+
+  if (left.maxVal >= node.val || right.minVal <= node.val) return Command(false, 0, 0);
+
+  return Command(true, 
+                 Math.max(node.val, right.maxVal),
+                 Math.min(node.val, left.minVal)
+                );
+};
+
+function Command(isValid, maxVal, minVal) {
+  return {
+    isValid,
+    maxVal,
+    minVal
+  }
+}
