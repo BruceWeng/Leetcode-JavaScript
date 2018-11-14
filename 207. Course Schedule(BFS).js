@@ -10,6 +10,8 @@
  * 3. Details:
  *   a. Remember declare array size and fill 0
  *   b. Need to use () after !
+ * 
+ * Runtime: 84ms
  */
 
  'use strict';
@@ -67,3 +69,70 @@
 
  let test2 = [[0, 1], [1, 0]];
  console.log(canFinish(2, test2));
+
+ /**
+  * Leetcode Fundamental: 11/14 Update
+  * 1. Declare indegree array: index: node, value: count of indegree
+  * 2. Declare leaveQueue to store next node to visit(indegree = 0)
+  * 3. Construct indegree array
+  * 4. Construct leaveQueue (Option: build adjList as graph for better traversal)
+  * 5. Declare count of leaves = 0
+  * 6. Recursive find next leave while(leaveQueue.length !== 0)
+  *    dequeue first element in leaveQueue
+  *    leavesCount += 1
+  *    if and parent in adjList is node, child indegree -= 1(since leaves are removed)
+  *      find next leaf (indegree[child] === 0) -> push next leaf to queue
+  * 7. if leavesCount === numCourses: no cycle, return true
+  *    else has cycle, return false
+  * 
+  * T: O(n), S: indegree: O(n), leaveQueue: O(n), adjList(Option): O(Edge)
+  * Runtime: 328 ms
+  * Traverse prerequisites is faster, traverse adjList cost more time
+  */
+ var canFinish = function(numCourses, prerequisites) {
+  // Handle edge cases
+  if (numCourses === undefined || prerequisites === undefined) return false;
+
+  if (numCourses === 0) return true;
+
+  // No dependency
+  if (prerequisites.length === 0 || prerequisites[0].length === 0) return true;
+
+  // Construct AdjList
+  let adjList = {};
+  let indegree = new Array(numCourses).fill(0);
+  for (let edge of prerequisites) {
+    let parent = edge[1];
+    let child = edge[0];
+    if (parent in adjList) adjList[parent].push(child);
+    else adjList[parent] = [child];
+    
+    // Construct indegree array
+    // Can not get from adjList because parent only know number of children but child has no info of number of parents
+    indegree[child] += 1;
+  }
+  
+  // Construct leavesQueue
+  let queue = [];
+  for (let node = 0; node < indegree.length; node += 1)
+    if (indegree[node] === 0) queue.push(node);
+  
+  // Declare leavesCount
+  let count = 0;
+
+  // Topological Sort
+  while (queue.length !== 0) { // queue contains Number
+    let currNode = queue.shift(); // currNode is Number
+    count += 1;
+    for (node in adjList) { // node is String
+      if (String(currNode) === node) { // Apply explicit type conversion
+        for (let child of adjList[node]) { // iterate children
+          indegree[child] -= 1;
+          if (indegree[child] === 0) queue.push(child);
+        }
+      }
+    }
+  }
+
+  return count === numCourses;
+};
