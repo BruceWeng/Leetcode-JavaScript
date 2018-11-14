@@ -83,3 +83,40 @@ const helper = function(node) {
   // 5.4 Handle true case
   return new ReturnType(true, Math.max(left.maxDepth, right.maxDepth) + 1);
 };
+
+/**
+ * Leetcode Fundamental: 11/14 Update
+ * Failure:
+ * 1. Fail to use isbalanced property in Command
+ * 2. Fail to find the position to update maxHeight
+ * 3. Fail to use a recursion helper function
+ * 4. Fail to compare left subtree and right subtree and generate false
+ * 
+ * Runtime: 68 ms
+ */
+const isBalanced = function(root) {
+  return helper(root).isBalanced;
+};
+
+const helper = (node) => {
+  if (node === null) return Command(true, 0);
+
+  let left = helper(node.left);
+  let right = helper(node.right);
+
+  // Handle false case
+  if (!left.isBalanced || !right.isBalanced) return Command(false, -1);
+
+  // Generate false case
+  if (Math.abs(left.maxHeight - right.maxHeight) > 1) return Command(false, -1);
+  
+  // Handle true case
+  return Command(true, Math.max(left.maxHeight, right.maxHeight) + 1);
+};
+
+function Command(isBalanced, maxHeight) {
+  return {
+    isBalanced,
+    maxHeight
+  }
+}
