@@ -18,6 +18,9 @@ A mapping of digit to letters (just like on the telephone buttons) is given belo
  * 2. Fail to decide base case: digits.length === 0
  * 3. Fail to make a coopy of candidate for each recursive call
  *    Since we need to make a copy, no need to use array, string is ok
+ * 
+ * T: O(4^n)
+ * Runtime: 52 ms
  */
 /**
  * @param {string} digits
