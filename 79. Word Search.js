@@ -336,3 +336,45 @@ const searchWord = (board, word, idx, i, j) => {
 const notInArea = (board, i, j) => {
   return (i < 0 || i >= board.length || j < 0 || j >= board[0].length);
 };
+
+/**
+ * Without notInArea helper func
+ * Runtime: 72ms
+ */
+/**
+ * @param {character[][]} board
+ * @param {string} word
+ * @return {boolean}
+ */
+var exist = function(board, word) {
+  if (board === undefined || word === undefined || board.length === 0 || board[0].length === 0 || word.length === 0) return false;
+  
+  for (let i = 0; i < board.length; i += 1) {
+    for (let j = 0; j < board[0].length ; j += 1) {
+      if (searchWord(board, word, 0, i, j)) return true;
+    }
+  }
+  
+  return false;
+};
+
+const searchWord = (board, word, idx, i, j) => {
+  if (idx === word.length) return true;
+  
+  if (i < 0 || i >= board.length || j < 0 || j >= board[0].length) return false;
+  
+  // handle visited and char not match current cell case
+  if (board[i][j] !== word[idx]) return false;
+  
+  let char = board[i][j];
+  board[i][j] = "";
+  
+  if (searchWord(board, word, idx + 1, i - 1, j) || // Up
+      searchWord(board, word, idx + 1, i, j + 1) || // Right
+      searchWord(board, word, idx + 1, i + 1, j) || // Down
+      searchWord(board, word, idx + 1, i, j - 1))   // Left
+    return true;
+      
+  board[i][j] = char;
+  return false;
+};
