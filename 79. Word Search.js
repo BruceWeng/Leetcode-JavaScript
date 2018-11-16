@@ -58,7 +58,7 @@ var exist = function(board, word) {
   }
 };
 /**
- * Solution 2
+ * Solution 2: 玩轉算法
  */
 /**
  * @param {character[][]} board
@@ -145,3 +145,194 @@ const exist2 = (board, word) => {
 // Testing
 let test1 = [["A","B","C","E"],["S","F","C","S"],["A","D","E","E"]];
 console.log(exist2(test1, "ABCCED")); // true
+
+/**
+ * Leetcode Fundamental: 11/16 Update
+ * Failure:
+ * Fail to do it by myself
+ * 4 base cases:
+ *   1. word found: true
+ *   2. notInArea: false
+ *   3. Cell visited: false
+ *   4. Char not match to current cell: false
+ * 
+ * T: Search: O(4^l), l = word.length (Recursion children number: 4, Recursion depth: l)
+ * Total T: O(m*n*4^l), 
+ * 
+ * S: Visited: O(m*n), Recursion depth: O(l)
+ * Total: S: O(m*n + l) 
+ * 
+ * Visited In Place Optimization by Label Board:
+ * Total: S: O(l)
+ * 
+ * Runtime: 112ms
+ */
+/**
+ * @param {character[][]} board
+ * @param {string} word
+ * @return {boolean}
+ */
+var exist = function(board, word) {
+  // Init visited board
+  let visited = [];
+  for (let i = 0; i < board.length; i += 1) {
+    visited.push(new Array(board[0].length).fill(false));
+  }
+  
+  // Iterate board
+  for (let i = 0; i < board.length; i += 1) {
+    for (let j = 0; j < board[0].length; j += 1) {
+      if (searchWord(board, word, 0, i, j, visited)) return true; // searchWord(board, word, word idx, row, col): bool, find word or not
+    }
+  }
+  
+  return false; // no word matched
+};
+
+const searchWord = (board, word, idx, i, j, visited) => {
+  // Handle run out of char
+  if (idx === word.length) return true;
+  
+  // Handle not in area
+  if (notInArea(board, i, j)) return false;
+  
+  // Handle visited cell false
+  if (visited[i][j]) return false;
+  
+  // Handle char not matched in board cell
+  if (board[i][j] !== word[idx]) return false;
+  
+  
+  // Set visited[i][j] = true in advance, like find cycle in graph
+  visited[i][j] = true;
+  
+  // Finde next position
+  const direction = [ [-1, 0], [0, 1], [1, 0], [0, -1]]; // up right down left
+  for (let dir of direction) { // dir: [row, col]
+    let nextI = i + dir[0];
+    let nextJ = j + dir[1];
+    
+    if (searchWord(board, word, idx + 1, nextI, nextJ, visited)) return true;
+  }
+  
+  // Restore visited state to unvisited
+  visited[i][j] = false;
+  
+  // Current cell and all the children not matech to word[idx]
+  return false;
+};
+
+const notInArea = (board, i, j) => {
+  return (i < 0 || i >= board.length || j < 0 || j >= board[0].length);
+};
+
+/**
+ * In Place Visited Solution
+ * No saving time
+ */
+/**
+ * @param {character[][]} board
+ * @param {string} word
+ * @return {boolean}
+ */
+var exist = function(board, word) {  
+  // Iterate board
+  for (let i = 0; i < board.length; i += 1) {
+    for (let j = 0; j < board[0].length; j += 1) {
+      if (searchWord(board, word, 0, i, j)) return true; // searchWord(board, word, word idx, row, col): bool, find word or not
+    }
+  }
+  
+  return false; // no word matched
+};
+
+const searchWord = (board, word, idx, i, j) => {
+  // Handle run out of char
+  if (idx === word.length) return true;
+  
+  // Handle not in area
+  if (notInArea(board, i, j)) return false;
+  
+  // Handle visited cell false &&  
+  // Handle char not matched in board cell
+  if (board[i][j] !== word[idx]) return false;
+  
+  
+  // Set visited[i][j] = true in advance, like find cycle in graph
+  let char = board[i][j];
+  board[i][j] = "";
+  
+  // Finde next position
+  const direction = [ [-1, 0], [0, 1], [1, 0], [0, -1]]; // up right down left
+  for (let dir of direction) { // dir: [row, col]
+    let nextI = i + dir[0];
+    let nextJ = j + dir[1];
+    
+    if (searchWord(board, word, idx + 1, nextI, nextJ)) return true;
+  }
+  
+  // Restore visited state to unvisited
+  board[i][j] = char;
+  
+  // Current cell and all the children not matech to word[idx]
+  return false;
+};
+
+const notInArea = (board, i, j) => {
+  return (i < 0 || i >= board.length || j < 0 || j >= board[0].length);
+};
+
+/**
+ * Alternative solution with or operation
+ * 
+ * Runtime: 84 ms
+ */
+/**
+ * @param {character[][]} board
+ * @param {string} word
+ * @return {boolean}
+ */
+var exist = function(board, word) {  
+  // Iterate board
+  for (let i = 0; i < board.length; i += 1) {
+    for (let j = 0; j < board[0].length; j += 1) {
+      if (searchWord(board, word, 0, i, j)) return true; // searchWord(board, word, word idx, row, col): bool, find word or not
+    }
+  }
+  
+  return false; // no word matched
+};
+
+const searchWord = (board, word, idx, i, j) => {
+  // Handle run out of char
+  if (idx === word.length) return true;
+  
+  // Handle not in area
+  if (notInArea(board, i, j)) return false;
+  
+  // Handle visited cell false &&  
+  // Handle char not matched in board cell
+  if (board[i][j] !== word[idx]) return false;
+  
+  
+  // Set visited[i][j] = true in advance, like find cycle in graph
+  let char = board[i][j];
+  board[i][j] = "";
+  
+  // Finde next position
+  if (searchWord(board, word, idx + 1, i - 1, j) || // up
+      searchWord(board, word, idx + 1, i, j + 1) || // right
+      searchWord(board, word, idx + 1, i + 1, j) || // down
+      searchWord(board, word, idx + 1, i, j - 1)) // left
+    return true;
+  
+  // Restore visited state to unvisited
+  board[i][j] = char;
+  
+  // Current cell and all the children not matech to word[idx]
+  return false;
+};
+
+const notInArea = (board, i, j) => {
+  return (i < 0 || i >= board.length || j < 0 || j >= board[0].length);
+};
