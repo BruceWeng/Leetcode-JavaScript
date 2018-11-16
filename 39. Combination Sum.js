@@ -40,3 +40,42 @@ var combinationSum = function(candidates, target) {
     }
   }
 };
+
+/**
+ * Leecode Fundamental: 11/16 Update
+ * 
+ * T: O(2^n), n: candidates.length. Each num can be added or not
+ * Runtime: 72 ms
+ */
+/**
+ * @param {number[]} candidates
+ * @param {number} target
+ * @return {number[][]}
+ */
+var combinationSum = function(candidates, target) {
+  if (candidates === undefined || candidates.length === 0 || target === undefined || target <= 0) return [];
+  
+  let result = [];
+  let candid = [];
+  
+  backtrack(result, candid, candidates, target, 0);
+  
+  return result;
+};
+
+const backtrack = (result, candid, candidates, target, start) => {
+  if (target < 0) return;
+  if (target === 0) {
+    result.push([...candid]);
+    return;
+  }
+  
+  for (let i = start; i < candidates.length; i += 1) {
+    // pruning
+    if (candidates[i] > target) continue;
+    
+    candid.push(candidates[i]);
+    backtrack(result, candid, candidates, target - candidates[i], i);
+    candid.pop();
+  }
+}
