@@ -39,3 +39,44 @@ var permute = function(nums) {
     }
   }
 };
+
+/**
+ * Leetcode Fundamental: 11/16 Update
+ * Failure:
+ * 1. Forget to make a copy before push candid into result
+ * 2. Fail to candid.pop() in the if loop
+ * 
+ * T: O(n!)
+ * Runtime: 72 ms
+ */
+/**
+ * @param {number[]} nums
+ * @return {number[][]}
+ */
+var permute = function(nums) {
+  if (nums === undefined || nums.length === 0) return [];
+  
+  let result = [];
+  let candid = [];
+  
+  backtrack(result, candid, nums);
+  
+  return result;
+};
+
+const backtrack = (result, candid, nums) => {
+  if (candid.length === nums.length) {
+    result.push([...candid]); // <- forget to make a copy
+    return;
+  }
+  
+  for (let num of nums) {
+    if (!candid.includes(num)) {
+      candid.push(num);
+      backtrack(result, candid, nums);
+      candid.pop(); // <- forget to put it in the if loop
+    }
+  }
+  
+  return result;
+};
