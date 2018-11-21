@@ -34,6 +34,8 @@ The cells are adjacent in only four directions: up, down, left and right.
  * 2. Recursive update each neighbor cell once 0 cell found, pass the dist + 1 to next update dfs
  * 
  * DFS solution TLE, only BFS works
+ * Nearest Question: Prefer BFS
+ * Reference: 286. Walls and Gates
  */
 /**
  * @param {number[][]} matrix
@@ -84,6 +86,12 @@ const updateDist = (matrix, i, j, dist) => {
 /**
  * BFS Solution
  * Runtime: 216 ms
+ * 
+ * The approach enqueue multiple position in the queue at first round is called:
+ * Mutli-End BFS
+ * 
+ * If we call BFS function every time we find matrix[i][j] === 0 (single start point):
+ * Naive BFS -> TLE
  */
 const updateMatrix = (matrix) => {
   let m = matrix.length;
