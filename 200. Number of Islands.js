@@ -133,5 +133,83 @@ const findConnected = (grid, i, j) => {
   }
 };
 
-console.log(numIslands2(test1)); // 3
-console.log(numIslands2(test2)); // 1
+/**
+ * Union Find T: Nearly O(1)
+ * T: O(mn)
+ * Runtime: 68 ms
+ */
+/**
+ * Patterns
+ * 1. Initialize groups = [i for i in range(n)] (index: node, value: root)
+ * 2. find(groups, index): root
+ * 3. union(groups, i1, j1, i2, j2, col): void (side effect)
+ */
+
+const find = (groups, index) => {
+  // isolated
+  if (groups[index] === index) return index;
+
+  // group
+  return find(groups, groups[index]);
+};
+
+const union = (groups, i1, j1, i2, j2, col) => {
+  // map matrix to array
+  let index1 = i1 * col + j1;
+  let index2 = i2 * col + j2;
+  let root1 = find(groups, index1);
+  let root2 = find(groups, index2);
+
+  // Already unioned
+  if (root1 === root2) return;
+
+  // Change root2 to root1
+  groups[root2] = root1;
+};
+
+/**
+ * @param {character[][]} grid
+ * @return {number}
+ */
+var numIslands3 = function(grid) {
+  if (grid === undefined || grid.length === 0 || grid[0].length === 0) return 0;
+
+  let m = grid.length;
+  let n = grid[0].length;
+
+  let groups = [];
+  for (let i = 0; i < m*n; i += 1) {
+    groups.push(i);
+  }
+
+  // Mark roots
+  for (let i = 0; i < m; i += 1) {
+    for (let j = 0; j < n; j += 1) {
+      if (grid[i][j] === '1') groups[i*n+j] = i * n + j;
+      else groups[i*n+j] = -1; // Cell 0, not in any groups
+    }
+  }
+
+  // Union right and down cells
+  for (let i = 0; i < m; i += 1) {
+    for (let j = 0; j < n; j += 1) {
+      if (grid[i][j] === '1') {
+        // Union right cell
+        if (j+1 < n && grid[i][j+1] === '1') union(groups, i, j, i, j+1, n);
+        // Union down cell
+        if (i+1 < m && grid[i+1][j] === '1') union(groups, i, j, i+1, j, n);
+      }
+    }
+  }
+
+  let result = 0;
+  // Count groups
+  for (let i = 0; i < groups.length; i += 1) {
+    if (groups[i] === i) result += 1;
+  }
+
+  return result;
+};
+
+console.log(numIslands3(test1)); // 3
+console.log(numIslands3(test2)); // 1
