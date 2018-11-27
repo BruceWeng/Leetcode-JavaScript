@@ -78,3 +78,37 @@ let test2 = [
 ];
 
 console.log(maxAreaOfIsland(test2)); // 0
+
+/**
+ * Leetcode Fundamental: 11/27 Update
+ * Review
+ * 
+ * Runtime: 76 ms
+ */
+/**
+ * @param {number[][]} grid
+ * @return {number}
+ */
+
+const maxAreaOfIsland = (grid) => {
+  let result = 0;
+
+  for (let i = 0; i < grid.length; i += 1) {
+    for (let j = 0; j < grid[0].length; j += 1) {
+      if (grid[i][j] === 1) {
+        result = Math.max(result, helper(grid, i, j));
+      }
+    }
+  }
+  
+  return result;
+};
+
+const helper = (grid, i, j) => {
+  if (i < 0 || i >= grid.length || j < 0 || j >= grid[0].length || grid[i][j] === 0) return 0;
+
+  grid[i][j] = 0;
+
+  return helper(grid, i-1, j) + helper(grid, i+1, j) + 
+         helper(grid, i, j-1) + helper(grid, i, j+1) + 1;
+};
