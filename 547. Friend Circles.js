@@ -90,3 +90,62 @@ let m2 = [[1,1,0],
           [1,1,1],
           [0,1,1]];
 console.log(findCircleNum(m2)); // 1
+
+/**
+ * Leetcode Fundamental: 11/27 Update
+ * Failure:
+ * Fail to implement Union Find, need to practice
+ * 
+ * Runtime: 72 ms
+ */
+function Group(n) {
+  var groups = new Array(n);
+  var ranks = new Array(n);
+  
+  for (let i = 0; i < groups.length; i += 1) {
+    groups[i] = i;
+    ranks[i] = i;
+  }
+
+  const find = (index) => {
+    // Isolated
+    if (groups[index] === index) return index;
+
+    // Group
+    return find(groups[index]);
+  }
+
+  const union = (index1, index2) => {
+    let root1 = find(index1);
+    let root2 = find(index2);
+
+    // Already unioned
+    if (root1 === root2) return;
+
+    // rank1 > rank2: swap roots
+    if (ranks[root1] > ranks[root2]) [[root1, root2] = [root2, root1]];
+
+    // Union by Rank
+    groups[root1] = root2;
+    ranks[root2] += ranks[root1];
+  }
+
+  return {
+    find,
+    union
+  }
+}
+
+const findCircleNum = function(M) {
+  let n = M.length;
+  let groups = new Group(n);
+  for (let i = 0; i < n; i += 1)
+    for (let j = i + 1; j < n; j += 1)
+      if (M[i][j] === 1) groups.union(i, j);
+
+  let circles = new Set();
+  for (let i = 0; i < n; i += 1)
+    circles.add(groups.find(i));
+
+  return circles.size;
+};
