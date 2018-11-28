@@ -81,3 +81,45 @@ const isSafe = (graph, start, color) => {
   color[start] = 1;
   return true;
 };
+
+/**
+ * Solution with Enum
+ * Prefer Enum over String Constants
+ * No obvious performance benefit, but easier for debuging.
+ * Runtime: 136 ms
+ */
+/**
+ * @param {number[][]} graph
+ * @return {number[]}
+ */
+
+var eventualSafeNodes = function(graph) { // graph[i] is allowed to be empty
+  if (graph === undefined) return [];
+
+  let result = []; // O(N)
+  let State = Object.freeze({
+    Unvisited: 0,
+    Safe: 1,
+    Unsafe: 2
+  });
+
+  let color = new Array(graph.length).fill(State.Unvisited); // O(N)
+
+  for (let i = 0; i < graph.length; i += 1) { // O(N)
+    if (isSafe(graph, i, color, State)) result.push(i);
+  }
+
+  return result;
+};
+
+const isSafe = (graph, start, color, State) => {
+  if (color[start] !== State.Unvisited) return color[start] === State.Safe;
+
+  color[start] = State.Unsafe;
+  for (let node of graph[start]) { // O(E): Stack Depth
+    if (!isSafe(graph, node, color, State)) return false;
+  }
+
+  color[start] = State.Safe;
+  return true;
+};
