@@ -126,3 +126,8 @@ console.log(findColor2('zre', colors))
 
 console.log(findColor2('gold', colors))
 // [ 'darkgoldenrod', 'gold', 'goldenrod', 'lightgoldenrodyellow', 'palegoldenrod' ]
+
+/**
+ * Revisit: 11/28 Update
+ * 72. Edit Distance with only insert allowed
+ */
