@@ -2,6 +2,17 @@
 
 const colors = ["aliceblue","antiquewhite","aqua","aquamarine","azure","beige","bisque","black","blanchedalmond","blue","blueviolet","brown","burlywood","cadetblue","chartreuse","chocolate","coral","cornflowerblue","cornsilk","crimson","cyan","darkblue","darkcyan","darkgoldenrod","darkgray","darkgreen","darkgrey","darkkhaki","darkmagenta","darkolivegreen","darkorange","darkorchid","darkred","darksalmon","darkseagreen","darkslateblue","darkslategray","darkslategrey","darkturquoise","darkviolet","deeppink","deepskyblue","dimgray","dimgrey","dodgerblue","firebrick","floralwhite","forestgreen","fuchsia","gainsboro","ghostwhite","gold","goldenrod","gray","green","greenyellow","grey","honeydew","hotpink","indianred","indigo","ivory","khaki","lavender","lavenderblush","lawngreen","lemonchiffon","lightblue","lightcoral","lightcyan","lightgoldenrodyellow","lightgray","lightgreen","lightgrey","lightpink","lightsalmon","lightseagreen","lightskyblue","lightslategray","lightslategrey","lightsteelblue","lightyellow","lime","limegreen","linen","magenta","maroon","mediumaquamarine","mediumblue","mediumorchid","mediumpurple","mediumseagreen","mediumslateblue","mediumspringgreen","mediumturquoise","mediumvioletred","midnightblue","mintcream","mistyrose","moccasin","navajowhite","navy","oldlace","olive","olivedrab","orange","orangered","orchid","palegoldenrod","palegreen","paleturquoise","palevioletred","papayawhip","peachpuff","peru","pink","plum","powderblue","purple","red","rosybrown","royalblue","saddlebrown","salmon","sandybrown","seagreen","seashell","sienna","silver","skyblue","slateblue","slategray","slategrey","snow","springgreen","steelblue","tan","teal","thistle","tomato","turquoise","violet","wheat","white","whitesmoke","yellow","yellowgreen"]
 
+/**
+ * m: len(searchTerm)
+ * n: len(color)
+ * l: len(colors)
+ * T: O(m*n^2*l)
+ */
+/**
+ * 
+ * @param {*} searchTerm 
+ * @param {*} colors 
+ */
 function findColor(searchTerm, colors) {
   // Handle edge cases:
   // 1. empty inputs
@@ -30,104 +41,82 @@ function findColor(searchTerm, colors) {
 // i
 // a n t i q u e w h i t e
 //   s
-// 
   
-// console.log(findColor('ua', colors))
-
-// console.log(findColor('uqi', colors))
-// [ 'darkturquoise', 'mediumaquamarine', 'mediumturquoise', 'paleturquoise', 'turquoise' ]
-
-// console.log(findColor('zre', colors))
-// [ 'azure' ]
-
-// console.log(findColor('gold', colors))
-// [ 'darkgoldenrod', 'gold', 'goldenrod', 'lightgoldenrodyellow', 'palegoldenrod' ]
-
-
-
-  // 2. map: {
-  //      a: [aqu, a, aliceblue, antiquewhite..., maroon],
-  //      b: [brown, black...],
-  // .    u: [ua,
-  // }
-  // search: ua
-
-
-  // 3. Trie Tree
-  /*
-               []
-             /
-            a
-          /  \
-         l    z
-        /      \
-       i        u
-      /          \
-     ...          r
-                   \ 
-     /              e
-    e
-   /
-  null    
-  */
- /**
-  * Update with Color map
-  * Still can not handle order problem
-  */
- function ColorMap(color) { 
-   let map = {};
-   for (let c of color) { // O(maxlen(color))
-     if (c in map) map[c] += 1;
-     else map[c] = 1;
-   }
-   return {
-     word: color,
-     map // key: character, value: frequency
-   }
- }
- // O(len(array) * maxlen(element))
- const findColor2 = (searchTerm, colors) => {
-   if (searchTerm === undefined || colors === undefined || colors.length === 0) return [];
-   
-   let result = [];
-   let colorMaps = [];
-   for (let color of colors) { // O(n)
-     let colorMap = ColorMap(color); // O(maxlen(color))
-    //  console.log(colorMap);
-     colorMaps.push(colorMap);
-   }
-
-   for (let colorMap of colorMaps) { // O(n)
-     for (let c of searchTerm) { // O(len(searchTerm))
-       if (!(c in colorMap.map)) break;
-       else colorMap.map[c] -= 1;
-     }
-   }
-
-   let remainingChar = 0;
-   for (let colorMap of colorMaps) { // O(n)
-     remainingChar = 0;
-     for (let key in colorMap.map) { // O(# unique char in searchTerm)
-       remainingChar += colorMap.map[key];
-     }
-     if (remainingChar === colorMap.word.length - searchTerm.length) result.push(colorMap.word);
-   }
-
-   return result;
- };
-
-//  console.log(findColor2('ua', colors))
-
-console.log(findColor2('uqi', colors))
-// [ 'darkturquoise', 'mediumaquamarine', 'mediumturquoise', 'paleturquoise', 'turquoise' ]
-
-console.log(findColor2('zre', colors))
-// [ 'azure' ]
-
-console.log(findColor2('gold', colors))
-// [ 'darkgoldenrod', 'gold', 'goldenrod', 'lightgoldenrodyellow', 'palegoldenrod' ]
-
 /**
  * Revisit: 11/28 Update
  * 72. Edit Distance with only insert allowed
+ * insert string1 and string2: "abbc" -> "ac" = "abb" -> "a" (i, j-1)
+ * 
+ * m: len(searchTerm)
+ * n: len(color)
+ * l: len(colors)
+ * T: O(m*n*l)
  */
+function findColor2(searchTerm, colors) {
+  // Handle edge cases:
+  // 1. empty inputs
+  if (searchTerm === undefined || colors === undefined || colors.length === 0) return [];
+  let result = [];
+  for (let color of colors) { // O(l)
+    if (isConvertable(searchTerm, color)) result.push(color);
+  }
+
+  return result;
+}
+
+/**
+ * Given two words word1 and word2, find if it is possible to convert word1 to word2.
+ * 
+ * @param {string} word1 
+ * @param {string} word2 
+ */
+var isConvertable = function(word1, word2) {
+  let m = word1.length;
+  let n = word2.length;
+
+  let dp = new Array(m+1);
+  for (let i = 0; i < m + 1; i += 1) {
+    dp[i] = new Array(n+1);
+  }
+
+  for (let i = 0; i < m+1; i += 1) {
+    dp[i][0] = i;
+  }
+
+  for (let j = 0; j < n+1; j += 1) {
+    dp[0][j] = j;
+  }
+
+  // O(m*n)
+  for (let i = 1; i < m+1; i += 1) {
+    for (let j = 1; j < n+1; j += 1) {
+      if (word1[i-1] === word2[j-1]) {
+        dp[i][j] = dp[i-1][j-1];
+      } else {
+        dp[i][j] = Math.min(dp[i-1][j-1], dp[i][j-1]) + 1;
+      }
+    }
+  }
+
+  return dp[m][n] === n - m;
+};
+
+let test1a = findColor('ua', colors)
+let test2a = findColor2('ua', colors)
+console.log(test1a.toString() === test2a.toString());
+// [ 'aqua', 'aquamarine', 'fuchsia', 'mediumaquamarine', 'mediumseagreen', 'mediumslateblue' ]
+let test1b = findColor('uqi', colors)
+let test2b = findColor2('uqi', colors)
+console.log(test1b.toString() === test2b.toString());
+// [ 'darkturquoise', 'mediumaquamarine', 'mediumturquoise', 'paleturquoise', 'turquoise' ]
+
+let test1c = findColor('zre', colors)
+let test2c = findColor2('zre', colors)
+console.log(test1c.toString() === test2c.toString());
+// [ 'azure' ]
+
+let test1d = findColor('gold', colors)
+let test2d =findColor2('gold', colors)
+console.log(test1d.toString() === test2d.toString());
+// [ 'darkgoldenrod', 'gold', 'goldenrod', 'lightgoldenrodyellow', 'palegoldenrod' ]
+
