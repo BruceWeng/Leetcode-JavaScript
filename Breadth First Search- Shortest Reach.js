@@ -35,9 +35,9 @@ function bfs(n, m, edges, s) {
   let graph = [];
   for (let i = 0; i < n; i += 1) graph.push([]);
 
-  for (edge of edges) {
-    graph[edge[0]-1].push(edge[1]-1);
-    graph[edge[1]-1].push(edge[0]-1);
+  for (const[node, next] of edges) {
+    graph[node-1].push(next-1);
+    graph[next-1].push(node-1);
   }
 
   let queue = [s-1];
