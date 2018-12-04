@@ -34,3 +34,43 @@ graph[i] will contain integers in range [0, graph.length - 1].
 graph[i] will not contain i or duplicate values.
 The graph is undirected: if any element j is in graph[i], then i will be in graph[j].
  */
+/**
+ * Leetcode Fundamental: 12/3 Update
+ * Graph Coloring
+ * Reference 886. Possible Bipartition
+ * T: O(N + E)
+ * S: O(N)
+ * Runtime: 64 ms
+ */
+/**
+ * @param {number[][]} graph
+ * @return {boolean}
+ */
+var isBipartite = function(graph) {
+  if (graph.length === 0) return false;
+  
+  let Color = {
+    black: 0,
+    red: 1,
+    blue: 2
+  }
+
+  let colors = new Array(graph.length).fill(Color.black);
+  for (const node of graph.keys()) // Faster than let i = 0; i < graph.length; i += 1
+    if (colors[node] === Color.black && !canBeColor(graph, colors, Color, node, Color.red)) return false;
+
+  return true;
+};
+
+const canBeColor = (graph, colors, Color, node, currColor) => {
+  colors[node] = currColor;
+  for (const next of graph[node]) {
+    if (colors[next] === currColor) return false;
+
+    let nextColor = (currColor === Color.red) ? Color.blue : Color.red;
+
+    if (colors[next] === Color.black && !canBeColor(graph, colors, Color, next, nextColor)) return false;
+  }
+
+  return true;
+};
