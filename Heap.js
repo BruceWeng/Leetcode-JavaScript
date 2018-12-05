@@ -290,7 +290,8 @@ module.exports = function Heap(compareFunc) {
     push,
     pop,
     size,
-    remove
+    remove,
+    nums
   }
 }
   

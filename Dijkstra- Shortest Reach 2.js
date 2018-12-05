@@ -83,8 +83,8 @@ function shortestReach(n, edges, s) {
   minHeap.push([s, 0]); // Push only [node, dist]
 
   while (minHeap.size() !== 0) {
-    let [node, dist] = minHeap.pop();
-    if (visited[node]) continue;
+    let [node, dist] = minHeap.pop(); // Quarentee the smallest dist pop up first
+    if (visited[node]) continue; // Only update smallest dist for each node
     visited[node] = true;
     result[node] = dist;
     
