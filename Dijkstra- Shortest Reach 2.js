@@ -46,6 +46,9 @@ Note: If the graph is "1 based", here is the only thing need to be changed:
     graph[node-1].push([next-1, weight]);
     graph[next-1].push([node-1, weight]);
   }
+
+T: O(N + E)
+S: O(N + E)
  */
 /**
  * @param {number} n
