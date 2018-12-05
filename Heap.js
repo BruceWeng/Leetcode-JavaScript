@@ -180,7 +180,7 @@ class Heap {
  * 1. Transform Heap from class to constructor func
  * 2. Figure out how sinkDown works
  */
-function Heap(compareFunc) {
+module.exports = function Heap(compareFunc) {
   const nums = [];
   const compare = compareFunc || function(a, b) { a - b }; // Can not use arrow func here
   
@@ -294,19 +294,19 @@ function Heap(compareFunc) {
   }
 }
   
-let maxHeap = Heap((a, b) => b - a); // default min heap
-maxHeap.push(2);
-maxHeap.push(1);
-maxHeap.push(3);
-maxHeap.push(5);
-maxHeap.push(4);
+// let maxHeap = Heap((a, b) => b - a); // default min heap
+// maxHeap.push(2);
+// maxHeap.push(1);
+// maxHeap.push(3);
+// maxHeap.push(5);
+// maxHeap.push(4);
 
-console.log(maxHeap.size()); // 5
-console.log(maxHeap.peek()); // 5
-console.log(maxHeap.remove(3)); // 3
-console.log(maxHeap.pop()); // 5
-console.log(maxHeap.pop()); // 4
-console.log(maxHeap.pop()); // 2
-console.log(maxHeap.pop()); // 1
-console.log(maxHeap.pop()); // null
-console.log(maxHeap.size()); // 0
+// console.log(maxHeap.size()); // 5
+// console.log(maxHeap.peek()); // 5
+// console.log(maxHeap.remove(3)); // 3
+// console.log(maxHeap.pop()); // 5
+// console.log(maxHeap.pop()); // 4
+// console.log(maxHeap.pop()); // 2
+// console.log(maxHeap.pop()); // 1
+// console.log(maxHeap.pop()); // null
+// console.log(maxHeap.size()); // 0
