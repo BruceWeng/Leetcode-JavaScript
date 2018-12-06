@@ -41,13 +41,7 @@ Steps:
 5. Pop min(node.dist) from Priority Queue and repeat 3, 4, 5 <- Greedy
 6. Finish when all node visited
 
-Note: If the graph is "1 based", here is the only thing need to be changed:
-  for (const [node, next, weight] of edges) {
-    graph[node-1].push([next-1, weight]);
-    graph[next-1].push([node-1, weight]);
-  }
-
-T: O(N + E)
+T: O(NlogN + E)
 S: O(N + E)
  */
 /**
@@ -58,6 +52,8 @@ S: O(N + E)
  */
 const Heap = require("./Heap");
 function shortestReach(n, edges, s) {
+  let result = new Array(n).fill(Inf); // minDist
+
   /** 
    * Construct Graph: index: node: value: [[next, weight]...]
    * [
@@ -68,7 +64,7 @@ function shortestReach(n, edges, s) {
    * ]
    */
   let graph = [];
-  for (let i = 0; i < n; i += 1) graph.push([]);
+  for (let i = 0; i <= n; i += 1) graph.push([]); // Cover "1 based" graph
 
   for (const [node, next, weight] of edges) {
     graph[node].push([next, weight]);
@@ -76,7 +72,6 @@ function shortestReach(n, edges, s) {
   }
 
   let Inf = Number.MAX_SAFE_INTEGER;
-  let result = new Array(n).fill(Inf); // minDist
   let minHeap = Heap((a, b) => a[1] - b[1]); // Pop min node.dist ([next, dist])
   let visited = new Array(n).fill(false);
 
