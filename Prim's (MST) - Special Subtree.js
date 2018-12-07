@@ -42,7 +42,8 @@ function prims(n, edges, start) {
     graph[next].push([node, weight]);
   }
 
-  const connected = new Set([start]); // Use set as Union
+  const connected = new Array(n).fill(false); // Use array as Union
+  connected[start] = true;
   let minHeap = Heap((a, b) => a[1] - b[1]);
   
   // Put all neighbors in Heap first
@@ -50,13 +51,13 @@ function prims(n, edges, start) {
 
   while (minHeap.size() !== 0) {
     const [node, weight] = minHeap.pop();
-    if (!connected.has(node)) {
-      result += weight;
-      connected.add(node);
+    if (connected[node]) continue;
 
-      for (const [next, nextWeight] of graph[node]) {
-        minHeap.push([next, nextWeight]);
-      }
+    connected[node] = true;
+    result += weight;
+
+    for (const [next, nextWeight] of graph[node]) {
+      minHeap.push([next, nextWeight]);
     }
   }
 
