@@ -100,7 +100,7 @@ function shortestReach(n, edges, s) {
 /**
  * Review 12/6 Update
  */
-const shortestReach = (n, edges, s) => {
+const shortestReach2 = (n, edges, s) => {
   // 1. Declare dist for each node with default value: Inf
   // 2. Construct graph: index: node, value: [next, weight]
   // 3. Declare visited array.fill(false)
@@ -114,16 +114,16 @@ const shortestReach = (n, edges, s) => {
   // 6. Update all isolated nodes dist as -1
   // 7. Return dists
   let Inf = Number.MAX_SAFE_INTEGER;
-  let dists = new Array(n).fill(Inf);
+  let dists = new Array(n+1).fill(Inf);
 
   let graph = [];
-  for (let i = 0; i < n; i += 1) graph.push([]);
+  for (let i = 0; i < n+1; i += 1) graph.push([]);
   for (const [node, next, weight] of edges) {
     graph[node].push([next, weight]);
     graph[next].push([node, weight]);
   }
 
-  let visited = new Array(n).fill(false);
+  let visited = new Array(n+1).fill(false);
 
   let minHeap = Heap((a, b) => a[1] - b[1]);
   minHeap.push([s, 0]);
@@ -141,7 +141,7 @@ const shortestReach = (n, edges, s) => {
         minHeap.push([next, dist + weight]);
   }
 
-  for (let i = 0; i < dists.length; i += 1) 
+  for (let i = 1; i < dists.length; i += 1) 
     if (dists[i] === Inf) dists[i] = -1;
 
   return dists;
@@ -151,7 +151,7 @@ const shortestReach = (n, edges, s) => {
 let n = 4;
 let edges = [[0, 1, 24], [0, 3, 20], [2, 0, 3], [3, 2, 12]];
 let s = 0;
-console.log(shortestReach(n, edges, s)); // [0, 24, 3, 15];
+console.log(shortestReach2(n, edges, s)); // [0, 24, 3, 15];
 /**
  *        1          2
  *        |  w: 3  / |
