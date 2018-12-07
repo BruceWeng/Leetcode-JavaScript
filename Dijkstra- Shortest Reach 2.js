@@ -52,6 +52,7 @@ S: O(N + E)
  */
 const Heap = require("./Heap");
 function shortestReach(n, edges, s) {
+  let Inf = Number.MAX_SAFE_INTEGER;
   let result = new Array(n).fill(Inf); // minDist
 
   /** 
@@ -71,9 +72,8 @@ function shortestReach(n, edges, s) {
     graph[next].push([node, weight]);
   }
 
-  let Inf = Number.MAX_SAFE_INTEGER;
   let minHeap = Heap((a, b) => a[1] - b[1]); // Pop min node.dist ([next, dist])
-  let visited = new Array(n).fill(false);
+  let visited = new Array(n).fill(false); 
 
   minHeap.push([s, 0]); // Push only [node, dist]
 
@@ -85,7 +85,7 @@ function shortestReach(n, edges, s) {
     
     for (let [next, weight] of graph[node]) {
       if (!visited[next] && dist + weight < result[next]) {
-        minHeap.push([next, dist + weight]);
+        minHeap.push([next, dist + weight]); // Push new dist in minHeap as candidate
       }
     }
   }
@@ -96,6 +96,56 @@ function shortestReach(n, edges, s) {
 
   return result;
 }
+
+/**
+ * Review 12/6 Update
+ */
+const shortestReach = (n, edges, s) => {
+  // 1. Declare dist for each node with default value: Inf
+  // 2. Construct graph: index: node, value: [next, weight]
+  // 3. Declare visited array.fill(false)
+  // 4. Declare minHeap to pop minweight next node
+  // 5. while in minHeap
+  //    a. Pop out new [node, dist], if new node is visited continue
+  //    b. Update visited[node], Update dists[node] = dist
+  //    c. Iterate next nodes: 
+  //       if !visited[next] && dist + weight < dists[next]:
+  //         push([next, dist + weight]) in minHeap as dist candidate
+  // 6. Update all isolated nodes dist as -1
+  // 7. Return dists
+  let Inf = Number.MAX_SAFE_INTEGER;
+  let dists = new Array(n).fill(Inf);
+
+  let graph = [];
+  for (let i = 0; i < n; i += 1) graph.push([]);
+  for (const [node, next, weight] of edges) {
+    graph[node].push([next, weight]);
+    graph[next].push([node, weight]);
+  }
+
+  let visited = new Array(n).fill(false);
+
+  let minHeap = Heap((a, b) => a[1] - b[1]);
+  minHeap.push([s, 0]);
+
+  while (minHeap.size() !== 0) {
+    let [node, dist] = minHeap.pop();
+    if (visited[node]) continue;
+
+    visited[node] = true;
+    dists[node] = dist;
+
+    // Iterate next
+    for (let [next, weight] of graph[node])
+      if (!visited[next] && dist + weight < dists[next]) 
+        minHeap.push([next, dist + weight]);
+  }
+
+  for (let i = 0; i < dists.length; i += 1) 
+    if (dists[i] === Inf) dists[i] = -1;
+
+  return dists;
+};
 
 // Test
 let n = 4;
