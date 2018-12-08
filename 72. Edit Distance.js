@@ -20,6 +20,7 @@ var minDistance = function(word1, word2) {
         dp[x] = new Array(m + 1);
     }
 
+    // dp[i][j] = minDistance(word1[:i], word2[:j])
     for (let y = 0; y < n + 1; y++) {
         dp[y][0] = y;
     }
@@ -45,3 +46,38 @@ var minDistance = function(word1, word2) {
 let test2 = 'orange';
 let test1 = 'apple';
 console.log(minDistance(test1, test2)); //6
+
+/**
+ * Leetcode Fundamental: 12/7 Update
+ * 
+ * Edit Distance >= ||word1| - |word2||
+ * Hamming Distance: (only substute)
+ * Edit Distance <= Hamming Distance
+ * 
+ * Recursive Solution:
+ * 
+ * word1: Ax
+ * word2: By
+ * 
+ * edist(Ax, By) = min( edist(A, B) + delta(x, y),
+ *                      edist(Ax, B) + 1,
+ *                      edist(A, By) + 1 )
+ * delta(x, y) = 0 if x = y, else 1
+ * 
+ * T: O( 3^min(len(word1), len(word2)) )
+ * S: O(min(len(word1), len(word2))) , (depth of call stack)
+ */
+const edist = (word1, word2) => {
+  let m = word1.length;
+  let n = word2.length;
+  if (m === 0) return n;
+  if (n === 0) return m;
+
+  let delta = (word1 === word2) ? 0 : 1;
+
+  return Math.min(
+    edist(word1.slice(0, m), word2.slice(0, n)) + delta,
+    edist(word1.slice(0, m), word2),
+    edist(word1, word2.slice(0, n))
+  );
+}
