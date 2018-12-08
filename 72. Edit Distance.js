@@ -3,6 +3,11 @@
  * 1. delete string1: "ab" -> "ac" (i-1, j)
  * 2. insert string1 and string2: "abbc" -> "ac" = "abb" -> "a" (i, j-1)
  * 3. replace string1: "abc" -> "ac" = "ab" -> "a" (i-1, j-1)
+ * 
+ * DP Solution:
+ * T: O(m*n)
+ * S: O(m*n) -> O(min(m, n))
+ * Runtime: 88 ms
  */
 /**
  * Given two words word1 and word2, find the minimum number of operations 
@@ -12,40 +17,38 @@
  * @param {string} word2 
  */
 var minDistance = function(word1, word2) {
-    let n = word1.length;
-    let m = word2.length;
+    let m = word1.length;
+    let n = word2.length;
 
-    let dp = new Array(n+1);
-    for (let x = 0; x < m + 1; x++) {
-        dp[x] = new Array(m + 1);
+    let stages = []; // m as stages, n as states
+    for (let i = 0; i < m+1; i += 1) stages.push(new Array(n+1).fill(0));
+
+    // stages[i][j] = minDistance(word1[:i+1], word2[:j+1]) [Include word1[i] and word2[j]]
+    for (let i = 0; i < m+1; i += 1) {
+      stages[i][0] = i;
     }
 
-    // dp[i][j] = minDistance(word1[:i], word2[:j])
-    for (let y = 0; y < n + 1; y++) {
-        dp[y][0] = y;
+    for (let j = 0; j < n+1; j += 1) {
+      stages[0][j] = j;
     }
 
-    for (let x = 0; x < m + 1; x++) {
-      dp[0][x] = x;
+    for (let i = 1; i < m+1; i += 1) {
+      for (let j = 1; j < n+1; j += 1) {
+        let delta = (word1[i-1] === word2[j-1]) ? 0: 1;
+        stages[i][j] = Math.min(
+          stages[i-1][j-1] + delta, // Replace
+          stages[i-1][j] + 1, // Delete
+          stages[i][j-1] + 1 // Insert
+        );
+      }
     }
 
-    for (let y = 1; y < n + 1; y++) {
-        for (let x = 1; x < m + 1; x++) {
-            if (word1[y - 1] === word2[x - 1]) {
-                dp[y][x] = dp[y - 1][x - 1];
-            } else {
-                dp[y][x] = Math.min(dp[y - 1][x - 1], Math.min(dp[y - 1][x], dp[y][x - 1])) + 1;
-            }
-        }
-    }
-
-    console.log(dp);
-    return dp[n][m];
+    return stages[m][n];
 };
 
 let test2 = 'orange';
 let test1 = 'apple';
-console.log(minDistance(test1, test2)); //6
+console.log(minDistance(test1, test2)); // 5
 
 /**
  * Leetcode Fundamental: 12/7 Update
@@ -59,9 +62,10 @@ console.log(minDistance(test1, test2)); //6
  * word1: Ax
  * word2: By
  * 
- * edist(Ax, By) = min( edist(A, B) + delta(x, y),
- *                      edist(Ax, B) + 1,
- *                      edist(A, By) + 1 )
+ * edist(Ax, By) = min( edist(A, B) + delta(x, y), Replace
+ *                      edist(Ax, B) + 1, Delete
+ *                      edist(A, By) + 1 Insert
+ *                    ) 
  * delta(x, y) = 0 if x = y, else 1
  * 
  * T: O( 3^min(len(word1), len(word2)) )
@@ -76,8 +80,8 @@ const edist = (word1, word2) => {
   let delta = (word1 === word2) ? 0 : 1;
 
   return Math.min(
-    edist(word1.slice(0, m), word2.slice(0, n)) + delta,
-    edist(word1.slice(0, m), word2),
-    edist(word1, word2.slice(0, n))
+    edist(word1.slice(0, m), word2.slice(0, n)) + delta, // Replace
+    edist(word1.slice(0, m), word2) + 1, // Delete
+    edist(word1, word2.slice(0, n) + 1) // Insert
   );
 }
