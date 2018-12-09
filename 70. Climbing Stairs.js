@@ -49,6 +49,9 @@ const climbStairs = function(n) {
 /**
  * Rolling Array
  */
+/**
+ * Leetcode Fundamental: 12/8 Review
+ */
 const climbStairs = function(n) {
   
   // 1. Initiate stages array
