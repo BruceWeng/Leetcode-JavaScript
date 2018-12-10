@@ -61,3 +61,44 @@ const helper = function(nums, start, end) {
     }
     return dp[0];
 }
+
+/**
+ * Leetcode Fundamental: 12/10 Update
+ * Failure:
+ * Fail to think of return max(rob 2 sub array)
+ * 
+ * ex: n = 5
+ * maxValue([1, 2, 3, 4, 5]) = max( maxValue([1, 2, 3, 4,]), maxValue([2, 3, 4, 5]) )
+ * 
+ * maxValue = max(rob(nums[0:n-1]), rob(nums[1:n])) (exclude end)
+ * 
+ * T: O(n)
+ * S: O(n)
+ * Runtime: 52 ms
+ */
+const rob = (nums) => {
+  if (nums === undefined || nums.length === 0) return 0;
+  let n = nums.length;
+
+  if (n === 0) return 0;
+  if (n === 1) return nums[0];
+  if (n === 2) return Math.max(nums[0], nums[1]);
+  if (n === 3) return Math.max(nums[0], nums[1], nums[2]);
+
+  return Math.max(robHelper(nums, 0, n-1), robHelper(nums, 1, n));
+};
+
+var robHelper = function(nums, start, end) {
+    let _nums = nums.slice(start, end);
+    let n = _nums.length;
+    let stages = new Array(4).fill(0); // Extra placeholder 0 at stages[0]
+    
+    stages[0] = 0
+    stages[1] = _nums[0];
+  
+    for (let i = 1; i < n; i += 1) {
+      stages[(i + 1) % 3] = Math.max(stages[i % 3], stages[(i - 1) % 3] + _nums[i]);
+    }
+    
+    return stages[n % 3];
+  };
