@@ -50,7 +50,7 @@ var maxProduct = function(nums) {
  * Rolling Array Improvement
  * 
  * T: O(n)
- * S: O(1)
+ * S: O(1), 6 spaces
  * Runtime: 60 ms
  */
 /**
@@ -81,7 +81,7 @@ var maxProduct = function(nums) {
  * Reduced to variables by assign currStage to prevStage
  * 
  * T: O(n)
- * S: O(1)
+ * S: O(1), 5 spaces
  * Runtime: 56 ms
  */
 /**
