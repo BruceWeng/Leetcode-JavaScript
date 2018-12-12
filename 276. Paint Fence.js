@@ -122,7 +122,7 @@ var numWays = function(n, k) {
  * Improvement: Only use prev 1 state -> Reduce two arrays to 4/two variables (Rolling Array)
  * 
  * T: O(n)
- * S: O(1)
+ * S: O(1), 4 spaces
  * Runtime: 52 ms
  */
 var numWays = function(n, k) {
@@ -144,4 +144,33 @@ var numWays = function(n, k) {
   }
 
   return sameStages[n % 2] + diffStages[n % 2];
+};
+
+/**
+ * Variable Reuse Improvement
+ * Hard!
+ * 
+ * T: O(n)
+ * S: O(1), 3 spaces
+ * Runtime: 48 ms
+ */
+var numWays = function(n, k) {
+  if (n === 0 || k === 0) return 0;
+
+  if (n === 1) return k;
+
+  // Initialization
+  let sameStage = k;
+  let diffStage = k * (k-1);
+
+  // Transfer Function from 3 to n
+  for (let i = 3; i <= n; i += 1) {
+      let prevDiffStage = diffStage; // diffStage assgined to prevDiffStage because the variable diffStage need to be reused in this loop
+      // sameStages[(i-2) % 2] = prevDiffStage; // The hard part is how to transfer sameStages[(i-2) % 2] to a new variable here
+      diffStage = (sameStage + prevDiffStage) * (k-1); // <- diffStage variable need to be reused here
+      // Solution of line 165: Move the line after sameStage is used, so the the sameStage variable can be reused
+      sameStage = prevDiffStage;
+  }
+
+  return sameStage + diffStage;
 };
