@@ -124,4 +124,34 @@ const subarraySum = (nums, k) => {
   return result;
 };
 
+/**
+ * Reduce Brute Force(PrefixSum) + 2 Sum(HashMap)
+ * 
+ * T: O(n)
+ * S: O(n)
+ * Runtime: 96 ms
+ */
+const subarraySum = (nums, k) => {
+  if (nums === undefined || nums.length === 0 || k === undefined) return 0;
+
+  // key: sum, value: count, (Put sum in map, check sum-k in map)
+  let map = {
+    0: 1 // if sum == k, sum-k == 0, we can find one match by default here
+  }; 
+
+  let sum = 0;
+  let result = 0;
+  for (let num of nums) {
+    sum += num;
+    // Find match, Update result
+    if ((sum - k) in map) result += map[sum - k];
+    // Old sum, Update map
+    if (sum in map) map[sum] += 1;
+    // New sum (sum not in map), Update map
+    else map[sum] = 1;
+  }
+
+  return result;
+};
+
 console.log(subarraySum([1,1,1], 2)); // 2
