@@ -24,6 +24,9 @@ conquer approach, which is more subtle.
  * Update 11/8:
  * Prefix sum is the sliding window for "subarray sum kind" problem
  * sum[start...end] can be derived prefix[end] - prefix[start-1] 
+ * 
+ * T: O(n)
+ * S: O(n)
  */
 /**
  * @param {number[]} nums
@@ -47,8 +50,6 @@ const maxSubArray = function(nums) {
   return result;
 };
 
-const test = [-2,1,-3,4,-1,2,1,-5,4];
-console.log(maxSubArray(test));
 /**
  * Leetcode Fundamental: 11/7 Update
  * Failure:
@@ -82,3 +83,76 @@ const maxSubArray = (nums) => {
 
   return result;
 };
+
+/**
+ * Leetcode Fundamental: 12/12 Revisit from DP Session
+ * Kadane Algorithm aka reduced Prefix Sum Solution
+ * 
+ * T: O(n)
+ * S: O(1), 4 spaces
+ * Runtime: 60 ms
+ */
+const maxSubArray = (nums) => {
+  if (nums === undefined || nums.length === 0) return 0;
+  
+  let n = nums.length;
+  let maxStages = Array(2).fill(0);
+  let globalStages = Array(2).fill(0);
+  maxStages[0] = nums[0];
+  globalStages[0] = nums[0];
+  for (let i = 1; i < nums.length; i += 1) {
+    maxStages[i % 2] = Math.max(maxStages[(i-1) % 2] + nums[i], nums[i]);
+    globalStages[i % 2] = Math.max(globalStages[(i-1) % 2], maxStages[i % 2]);
+  }
+
+  return globalStages[(n-1) % 2];
+};
+
+/**
+ * Variable Reuse Improvement
+ * 
+ * T: O(n)
+ * S: O(1), 3 spaces
+ *  * Runtime: 56 ms
+ */
+const maxSubArray = (nums) => {
+  if (nums === undefined || nums.length === 0) return 0;
+  
+  let maxStage = nums[0];
+  let globalStage = nums[0];
+  for (let i = 1; i < nums.length; i += 1) {
+    let prevMaxStage = maxStage;
+    maxStage = Math.max(prevMaxStage + nums[i], nums[i]);
+    globalStage = Math.max(globalStage, maxStage);
+  }
+
+  return globalStage;
+};
+
+/**
+ * Brute Force Solution
+ * Iterate from 0 to n-1 to find sum of subarray and update maxResult 
+ * 
+ * T: O(n^3)
+ * S: O(1)
+ * Runtime: TLE
+ */
+const maxSubArray = (nums) => {
+  if (nums === undefined || nums.length === 0) return 0;
+  let max = nums[0];
+  let n = nums.length;
+  for (let i = 0; i < n; i += 1) { // start index of subarray
+    for (let j = i + 1; j <= n; j += 1) { // end index of subarray (exclude)
+      let sum = 0;
+      for (let k = i; k < j; k += 1) {
+        sum += nums[k];
+      }
+      max = Math.max(max, sum);
+    }
+  }
+
+  return max;
+};
+
+const test = [-2,1,-3,4,-1,2,1,-5,4];
+console.log(maxSubArray(test)); // 6
