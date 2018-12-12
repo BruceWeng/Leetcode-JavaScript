@@ -142,11 +142,33 @@ const maxSubArray = (nums) => {
   let max = nums[0];
   let n = nums.length;
   for (let i = 0; i < n; i += 1) { // start index of subarray
-    for (let j = i + 1; j <= n; j += 1) { // end index of subarray (exclude)
+    for (let j = i + 1; j <= n; j += 1) { // end index of subarray (exclude!!!)
       let sum = 0;
       for (let k = i; k < j; k += 1) {
         sum += nums[k];
       }
+      max = Math.max(max, sum);
+    }
+  }
+
+  return max;
+};
+
+/**
+ * Reduced Brute Force
+ * 
+ * T: O(n^2)
+ * S: O(1)
+ * Runtime: 208ms
+ */
+const maxSubArray = (nums) => {
+  if (nums === undefined || nums.length === 0) return 0;
+  let max = nums[0];
+  let n = nums.length;
+  for (let i = 0; i < n; i += 1) { // start index of subarray
+    let sum = 0;
+    for (let j = i; j < n; j += 1) { // end index of subarray (include!!!)
+      sum += nums[j];
       max = Math.max(max, sum);
     }
   }
