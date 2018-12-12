@@ -98,11 +98,11 @@ var maxProduct = function(nums) {
   let globalStage = nums[0];
   
   for (let i = 1; i < n; i += 1) {
-    prevMinStage = minStage;
-    prevMaxStage = maxStage;
+    prevMinStage = minStage; // minStage assigned to prevMinStage because the variable minStage needs to be reused in this loop
+    prevMaxStage = maxStage; // maxStage assigned to prevMaxStage because the variable maxStage needs to be reused in this loop
     minStage = Math.min(prevMinStage * nums[i], prevMaxStage * nums[i], nums[i]);
     maxStage = Math.max(prevMinStage * nums[i], prevMaxStage * nums[i], nums[i]);
-    globalStage = Math.max(globalStage, maxStage);
+    globalStage = Math.max(globalStage, maxStage); // globalStage not assigned to prevGlobalStage because the variable globalStage not need to be reused in this loop
   }
 
   return globalStage;
