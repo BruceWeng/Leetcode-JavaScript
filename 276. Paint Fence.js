@@ -60,3 +60,88 @@ const numWays = function(n , k) {
 
     return sameCase + diffCase;
 }
+/**
+ * Leetcode Fundamental: 12/11 Update
+ * 
+ * Case 1: If position[i] is the same color as position[i-1], 1 color for k positions to choose: k ways
+ * Case 2: If position[i] is diff color from position[i-1], k-1 colors for k position to choose: k * (k-1) ways
+ * 
+ * Two stages:
+ * sameColorStages: new Array(n+1).fill(0)
+ * diffColorStages: new Array(n+1).fill(0)
+ * 
+ * index 0 and 1 are not used
+ * 
+ * Stages store "Number of ways to Paint at i" <- Very Important
+ * Initialization:
+ * 
+ * n = 1: return = k, stage doesn't matter
+ * n = 2:
+ *   same[2] = k*1, diff[2] = k*(k-1)
+ * n = 3:
+ *   Same case can come from only prev diff case, diff[2]: same[3] = diff[2] * 1
+ *   Diff case can come from both same prev case and diff case: diff[3] = (same[2] + diff[2]) * (k-1)
+ * 
+ * State Trasfer: from 3 to n
+ * same[i] = diff[i-1] * 1
+ * diff[i] = (same[i-1] + diff[i-1]) * (k-1)
+ * 
+ * return same[n] + diff[n]
+ * 
+ * T: O(n)
+ * S: O(n)
+ * Runtime: 52 ms
+ */
+/**
+ * @param {number} n
+ * @param {number} k
+ * @return {number}
+ */
+var numWays = function(n, k) {
+  if (n === 0 || k === 0) return 0;
+  
+  if (n === 1) return k;
+
+  let sameStages = new Array(n+1).fill(0);
+  let diffStages = new Array(n+1).fill(0);
+
+  // Initialization
+  sameStages[2] = k;
+  diffStages[2] = k * (k-1);
+
+  // Transfer Function from 3 to n
+  for (let i = 3; i <= n; i += 1) {
+      sameStages[i] = diffStages[i-1];
+      diffStages[i] = (sameStages[i-1] + diffStages[i-1]) * (k-1);
+  }
+
+  return sameStages[n] + diffStages[n];
+};
+
+/**
+ * Improvement: Only use prev 1 state -> Reduce two arrays to 4/two variables (Rolling Array)
+ * 
+ * T: O(n)
+ * S: O(1)
+ * Runtime: 52 ms
+ */
+var numWays = function(n, k) {
+  if (n === 0 || k === 0) return 0;
+
+  if (n === 1) return k;
+
+  let sameStages = new Array(2).fill(0);
+  let diffStages = new Array(2).fill(0);
+
+  // Initialization
+  sameStages[0] = k;
+  diffStages[0] = k * (k-1);
+
+  // Transfer Function from 3 to n
+  for (let i = 3; i <= n; i += 1) {
+      sameStages[(i-2) % 2] = diffStages[(i-1) % 2];
+      diffStages[i % 2] = (sameStages[(i-1) % 2] + diffStages[(i-1) % 2]) * (k-1);
+  }
+
+  return sameStages[n % 2] + diffStages[n % 2];
+};
