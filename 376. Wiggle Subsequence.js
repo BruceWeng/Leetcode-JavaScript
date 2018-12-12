@@ -93,7 +93,7 @@ var wiggleMaxLength = function(nums) {
  * Rolling Array Improvement
  * 
  * T: O(n)
- * S: O(1)
+ * S: O(1), 4 spaces
  * Runtime: 48 ms
  */
 /**
@@ -127,4 +127,42 @@ var wiggleMaxLength = function(nums) {
   }
 
   return Math.max(upStages[(n-1) % 2], downStages[(n-1) % 2]);
+};
+
+/**
+ * Variable Reused improvement
+ * 
+ * T: O(n)
+ * S: O(1), 2 spaces
+ * Runtime: 48 ms
+ */
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+var wiggleMaxLength = function(nums) {
+  if (nums === undefined) return 0;
+  let n = nums.length;
+  if (n <= 1) return n;
+
+  // Initialization
+  let upStage = 1;
+  let downStage = 1;
+
+  for (let i = 1; i < n; i += 1) {
+    if (nums[i] === nums[i-1]) {
+      // upStage = upStage;
+      // downStage = downStage;
+    }
+    else if (nums[i] > nums[i-1]) {
+      upStage = downStage + 1;
+      // downStage = downStage;
+    }
+    else if (nums[i] < nums[i-1]) {
+      downStage = upStage + 1;
+      // upStage = upStage;
+    }
+  }
+
+  return Math.max(upStage, downStage);
 };
