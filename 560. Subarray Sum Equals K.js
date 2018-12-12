@@ -44,12 +44,14 @@ const subarraySum = function(nums, k) {
   return result;
 };
 
-console.log(subarraySum([1,1,1], 2)); // 2
 /**
  * Leetcode Fundamental: 11/8 Update
  * Failure:
  * 1. Fail to think of using hashmap storing count
  * 2. Fail to use only one variable preSum to store prefix sum(rather than prefixSum[])
+ * 
+ * T: O(n)
+ * S: O(n)
  */
 const subarraySum = (nums, k) => {
   if (nums === undefined || nums.length === 0 || k === undefined) return 0;
@@ -71,3 +73,55 @@ const subarraySum = (nums, k) => {
 
   return result;
 };
+
+/**
+ * Leetcode Fundamental: 12/12 Revisited
+ * Brute Force: Iterate from 0 to n-1 to find sum of subarray == k and update result
+ * 
+ * T: O(n^3)
+ * S: O(1)
+ * 
+ * Runtime: TLE
+ * 
+ */
+const subarraySum = (nums, k) => {
+  if (nums === undefined || nums.length === 0 || k === undefined) return 0;
+  
+  let n = nums.length;
+  let result = 0;
+  for (let i = 0; i < n; i += 1) { // start index of subarray
+    for (let j = i+1; j <= n; j += 1) { // end index of subarray (exclude!!!)
+      let sum = 0;
+      for (let k = i; k < j; k += 1) sum += nums[k];
+      if (sum === k) result += 1;
+    }
+  }
+
+  return result;
+};
+
+/**
+ * Reduced Brute Force
+ * Add the sum of subarray in end index loop
+ * 
+ * T: O(n^2)
+ * S: O(1)
+ * Runtime: 304 ms
+ */
+const subarraySum = (nums, k) => {
+  if (nums === undefined || nums.length === 0 || k === undefined) return 0;
+  
+  let n = nums.length;
+  let result = 0;
+  for (let i = 0; i < n; i += 1) { // start index of subarray
+    let sum = 0;
+    for (let j = i; j < n; j += 1) { // end index of subarray (include!!!)
+      sum += nums[j];
+      if (sum === k) result += 1;
+    }
+  }
+
+  return result;
+};
+
+console.log(subarraySum([1,1,1], 2)); // 2
