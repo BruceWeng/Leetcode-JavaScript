@@ -77,3 +77,107 @@ const canPartition = function(nums) {
 
   return stages[sum];
 };
+
+/**
+ * Leetcode Fundamental: 12/12 Update
+ * 0/1 Knapsack leads:
+ * 1. Partition to two subset
+ * 2. Sum
+ * 
+ * Stages: 
+ * row: n+1 (include empty case), 
+ * col: possible sum, boundary: sum(nums) / 2
+ * content(bool): if it is possible to partition into two equal sum subsets at this i
+ * 
+ * Failure: 
+ * Fail to initialize stages
+ * 
+ * Initialization: 
+ * 1. stages[0][0] = true (zero number consists of sum 0 is true)
+ * 2. All the 0 col is ture
+ * 3. All the 0 row is false: zero number cannot consists sum other than 0
+ * Not: 1 and 2 for stages[i-1][j-num] to use
+ * 
+ * Trasfer function: (row: 1 to n, col: 1 to sum/2+1)
+ * 1. Not Pick num (nums[i-1]) at this round, stages[i][j] = stages[i-1][j]
+ * 2. Pick num (nums[i-1]) at this round, stages[i][j] = stages[i-1][j-num]
+ * Either case 1 is true or case 2 i true: stages[i][j] = true,
+ * -> stages[i][j] = stages[i-1][j] || stages[i-1][j-num]
+ * 
+ * return stages[n][sum/2+1]
+ * 
+ * T: O(n*sum)
+ * S: O(n*sum)
+ * Runtime: 172 ms
+ */
+/**
+ * @param {Number[]} nums
+ * @return {Boolean}
+ */
+const canPartition = function(nums) {
+  if (nums === undefined || nums.length === 0) return false;
+  let sum = 0;
+  for (let num of nums) sum += num;
+
+  if (sum % 2 === 1) return false;
+
+  let n = nums.length;
+  let stages = []; // (n+1) * (sum/2+1), content: false
+  for (let i = 0; i < n+1; i += 1) stages.push(new Array(sum/2+1).fill(false));
+  
+  // Initialization
+  for (let i = 0; i < n+1; i += 1) stages[i][0] = true;
+
+  // Trasfer function: (row: 1 to n, col: 1 to sum/2+1)
+  for (let i = 1; i < n+1; i += 1) {
+    for (let j = 1; j < sum/2+1; j += 1) {
+      let num = nums[i-1];
+      // Update only col sum >= num
+      if (j >= num) stages[i][j] = stages[i-1][j] || stages[i-1][j-num];
+    }
+  }
+
+  return stages[n][sum/2];
+};
+
+/**
+ * Variable Reuse Improvement
+ * Only prev 1 stage is used: n rows -> 2 rows(rolling array) -> 1 row
+ * 
+ * Very important step for reduce dimention for 0/1 Kanpsack Problem:
+ * Update current stage from right -> left!
+ * 
+ * T: O(n*sum)
+ * S: O(sum)
+ * Runtime: 96 ms
+ */
+const canPartition = function(nums) {
+  if (nums === undefined || nums.length === 0) return false;
+  let sum = 0;
+  for (let num of nums) sum += num;
+
+  if (sum % 2 === 1) return false;
+
+  let stages = new Array(sum/2+1).fill(false);
+  
+  // Initialization
+  stages[0] = true;
+
+  // Trasfer function: (row: 1 to n, col: 1 to sum/2+1)
+  for (let num of nums) {
+    /**
+     * Have to update current stage from right to left. 
+     * The following states in current stage also need to be updated by left states in prev stage.
+     * If we update from left to right, new state in current stage will not be preserved.
+     */
+    for (let j = sum/2; j > 0; j -= 1) { 
+      // Update only col sum >= num
+      if (j >= num) {
+        // current stage = update from prev stage
+        stages[j] = stages[j] || stages[j-num];
+      }
+    }
+  }
+
+  return stages[sum/2];
+};
