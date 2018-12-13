@@ -85,3 +85,37 @@ const edist = (word1, word2) => {
     edist(word1, word2.slice(0, n) + 1) // Insert
   );
 }
+
+/**
+ * DP Solution 12/12
+ * Rolling Array Improvement: m stages -> 2 stages
+ * Update different initial states in each stage while iteration
+ * Preset prevStage rather than currStage
+ * 
+ * T: O(m*n)
+ * S: O(n)
+ * Runtime: 104 ms
+ */
+var minDistance = function(word1, word2) {
+  let m = word1.length;
+  let n = word2.length;
+
+  let prevStage = new Array(n+1).fill(0); // n states
+
+  for (let j = 0; j < n+1; j += 1) prevStage[j] = j;
+
+  for (let i = 1; i < m+1; i += 1) {
+    let currStage = new Array(n+1).fill(i); // Init initial stages for row i
+    for (let j = 1; j < n+1; j += 1) {
+      let delta = (word1[i-1] === word2[j-1]) ? 0: 1;
+      currStage[j] = Math.min(
+        prevStage[j-1] + delta, // Replace
+        prevStage[j] + 1, // Delete
+        currStage[j-1] + 1 // Insert
+      );
+    }
+    prevStage = [...currStage]; // Copy currStage as prevStage for next iteration
+  }
+
+  return prevStage[n];
+};
