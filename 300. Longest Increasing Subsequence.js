@@ -56,3 +56,15 @@ const lengthOfLIS = function(nums) {
  * T: O(n^3) * O(n) (copy new LIS) = O(n^4)
  * S: O(n^3)
  */
+/**
+ * Leetcode Fundamental: 12/13 Update
+ * Brute Force Traversing all possible LIS starts from nums[i] also cost O(n^2)
+ * Need to use Binary Search to get a better solution.
+ * 
+ * Patience Sorting: Greedy Algorithm
+ * https://leetcode.com/problems/longest-increasing-subsequence/discuss/74824/JavaPython-Binary-search-O(nlogn)-time-with-explanation
+ * https://www.cs.princeton.edu/courses/archive/spring13/cos423/lectures/LongestIncreasingSubsequence.pdf
+ * 
+ * T: O(nlogn)
+ * S: O(n)
+ */
