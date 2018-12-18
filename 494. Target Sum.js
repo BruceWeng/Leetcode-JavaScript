@@ -34,6 +34,7 @@ Your output answer is guaranteed to be fitted in a 32-bit integer.
  * 5. return stage[sum + S]
  * 
  * T: (n*(2sum+1)), S: O(2*sum)
+ * currStage -> nextStage: Push Solution
  */
 /**
  * @param {number[]} nums
@@ -69,3 +70,81 @@ const findTargetSumWays = function(nums, S) {
   // 5. return final answer
   return stage[sum+S];
 };
+
+/**
+ * Leetcode Fundamental: 12/17 Update
+ * DP Solution:
+ * 1. Draw Tree
+ * 2. Transfer Func
+ * 3. Reduce States
+ * 4. Initialize Leaves
+ * 5. Build Stage
+ * 
+ * Ex: nums: [1, 1, 1, 1, 1], S: 3, output: 5
+ * states(cols): -5 - 5
+ * stages(rows): 0 - 5
+ * 1. Tree: 
+ *    node: count of pairs with this sum
+ *    pairs: (nums[0:i] used (include), target sum)
+ *    children: left: ith chose '-' sign, right: ith chose '+' sign
+ * 
+ *                             (0, 0) <- leave, not root                                                                   ([])
+ *                           /       \ 
+ *                       (1, -1)   (1, 1)                                                           ([-1]) ([1])
+ *                       /    \    /    \
+ *                   (2, -2)  (2, 0)   (2, 2)                                         ([-1, -1]) ([-1, 1], [1, -1]) ([1, 1])
+ *                   /    \   /   \    /    \
+ *               (3, -3) (3, -1)  (3, 1)  (3, 3)   ([-1, -1, -1]) ([-1, -1, 1], [-1, 1, -1], [1, -1, -1]) ([-1, 1, 1]  [1, -1, 1], [1, 1, -1])  ([1, 1, 1])
+ * 
+ * 2. Transfer Func: stage(i, j) = stage(i-1, j-nums[i-1]) + stage(i-1, j+nums[i-1]) <- Should not use this as Pull Model
+ *    Push Model: stages(i+1, j-nums[i]) += stages(i, j)
+ *                stages(i+1, j+nums[i]) += stages(i, j)
+ * 
+ * 3. Reduce States: Only i-1 stage used: S: O(n*2sum) -> O(2sum)
+ * 
+ * 4. Initilize leaves: stage(0, 0) = 1 (1 leave)
+ * 
+ * 5. Build Stage:
+ *     -5 | -4 | -3 | -2 | -1 | 0 | 1 | 2 | 3 | 4 | 5 |
+ * 0 |  0 |  0 |  0 |  0 |  0 | 1 | 0 | 0 | 0 | 0 | 0 | 
+ * 1 |    |    |    |    |  1 |   | 1 |   |   |   |   |
+ * 2 |    |    |    |  1 |    | 2 |   | 1 |   |   |   |
+ * 3 |    |    |  1 |    |  3 |   | 3 |   | 1 |   |   |
+ * 4 |    |  1 |    |  4 |    | 6 |   | 4 |   | 1 |   |
+ * 5 |  1 |    |  5 |    | 10 |   | 10|   | 5 |   | 1 |     
+ *                                          ^
+ *                                          |
+ *                                        answer                   
+ * Single leaf, multiple roots
+ * T: O(n*sum), S: O(n*sum) -> O(sum)
+ * Runtime: 80 ms
+ */
+const findTargetSumWays = function(nums, S) {
+  if (nums === undefined || S === undefined || nums.length === 0) return 0
+  let sum = 0;
+  for (num of nums) sum += num;
+  if (S > sum || S < -sum) return 0;
+  let n = nums.length;
+
+  let stages = [];
+  for (let i = 0; i <= n; i += 1) {
+    stages.push(new Array(2*sum+1).fill(0));
+  }
+  stages[0][sum] = 1;
+
+  for (let i = 0; i < n; i += 1) {
+    for (let j = nums[i]; j <= 2*sum-nums[i]; j += 1) {
+      if (stages[i][j] !== 0) { 
+        stages[i+1][j-nums[i]] += stages[i][j];
+        stages[i+1][j+nums[i]] += stages[i][j];
+      }
+    }
+  }
+
+  return stages[n][sum+S];
+};
+
+// Test
+let nums = [1, 1, 1, 1, 1];
+let S = 3;
+console.log(findTargetSumWays(nums, S)); // 5
