@@ -37,4 +37,39 @@ Explanation: 13 = 4 + 9.
  * 2. Each child is one prev state for the node.
  * 3. Transfer function: The relation between current node(stage) and children(prev stages).
  * 4. Tree Structure -> Single State DP
+ * 
+ * Induction:
+ * let stage[n+1] be indicates perfect square counts
+ * stages[0] = 0
+ * stages[1] = stages[1-1*1] + 1 = 1
+ * stages[2] = stages[2-1*1] + 1 = 2
+ * stages[3] = stages[3-1*1] + 1 = 3
+ * stages[4] = min(stages[4-1*1], stages[4-2*2]) + 1 = min(stages[3], stages[0]) + 1 = 1
+ * stages[5] = min(stages[5-1*1], stages[5-2*2]) + 1 = min(stages[4], stages[1]) + 1 = 2
+ * ...
+ * stages[13] = min(stages[13-1*1], stages[13-2*2], stages[13-3*3]) + 1
+ *            = min(stages[12], stages[9], stages[4]) + 1 = 2
+ * 
+ * stages[curr] = min(stages[curr-i*i]) + 1, i*i <= curr, i >= 1
+ * 
+ * T: O(nlogn), S: O(n)
+ * Runtime: 224 ms
  */
+/**
+ * @param {number} n
+ * @return {number}
+ */
+var numSquares = function(n) {
+  if (n <= 0) return 0;
+  let stages = new Array(n+1).fill(0);
+
+  for (let curr = 1; curr < n+1; curr += 1) {
+    let minCount = Number.MAX_SAFE_INTEGER;
+    for (let i = 1; i*i <= curr; i += 1) {
+      minCount = Math.min(minCount, stages[curr-i*i]);
+    }
+    stages[curr] = minCount + 1;
+  }
+  
+  return stages[n];
+};
