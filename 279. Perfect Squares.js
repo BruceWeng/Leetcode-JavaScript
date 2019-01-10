@@ -73,3 +73,35 @@ var numSquares = function(n) {
   
   return stages[n];
 };
+
+/**
+ * Print all results
+ */
+var numSquaresResult = function(n) {
+  if (n <= 0) return 0;
+  // let tuple = {count: 0, result: []};
+  let stages = [];
+  for (let i = 0; i < n+1; i += 1) stages.push({count: 0, result: []});
+
+  for (let curr = 1; curr < n+1; curr += 1) {
+    let minCount = Number.MAX_SAFE_INTEGER;
+    let candid = 0;
+    for (let i = 1; i*i <= curr; i += 1) {
+      if (stages[curr-i*i].count < minCount) {
+        minCount = stages[curr-i*i].count;
+        candid = i;
+      }
+    }
+    stages[curr].count = minCount + 1;
+    stages[curr].result = [...(stages[curr-candid*candid].result), candid*candid];
+  }
+  
+  return stages[n].result;
+};
+
+let n1 = 12;
+console.log(numSquaresResult(n1)); // Output: 3. Explanation: 12 = 4 + 4 + 4.
+
+
+let n2 = 13;
+console.log(numSquaresResult(n2)); // Output: 2. Explanation: 13 = 4 + 9.
