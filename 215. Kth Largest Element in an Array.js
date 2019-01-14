@@ -177,3 +177,71 @@ function Heap(compareFunc) {
     remove
   }
 }
+
+/**
+ * Leetcode Fundamental: 1/14/2019 Update
+ * T: O(n)
+ * S: O(1)
+ * Runtime: 72ms
+ */
+/**
+ * @param {number[]} nums
+ * @param {number} k
+ * @return {number}
+ */
+var findKthLargest = function(nums, k) {
+  if (nums === undefined || nums.length === 0 || k < 0 || k > nums.length) return 0;
+
+  nums = shuffle(nums);
+  // Partition nums in range [start...end] (include end)  
+  // Every time derive partition index and:
+  // 1. return nums[partitionIdx] if partitionIdx = k-1
+  // 2. end = partitionIdx - 1 if partitionIdx > k-1
+  // 3. start = partitionIdx + 1 if partitionIdx < k-1
+  
+  let start = 0;
+  let end = nums.length - 1;
+  while (true) {
+    let pivot = end;
+    let partitionIdx = partition(nums, pivot, start, end);
+    if (partitionIdx === k-1) return nums[partitionIdx];
+    else if (partitionIdx > k-1) end = partitionIdx - 1;
+    else if (partitionIdx < k-1) start = partitionIdx + 1;
+  }
+};
+
+const partition = (nums, pivot, start, end) => {
+  let pivotVal = nums[pivot];
+  let partitionIdx = start;
+  
+  for (let i = start; i < end; i += 1) {
+    if (nums[i] > pivotVal) {
+      swap(nums, i, partitionIdx);
+      partitionIdx += 1;
+    }
+  }
+  
+  swap(nums, end, partitionIdx);
+  return partitionIdx;
+};
+
+const shuffle = (nums) => {
+  if (nums.length < 2) return nums;
+  for (let j = 1; j < nums.length; j += 1) {
+    let i = Math.floor(Math.random() * (1/1+j));
+    swap(nums, i, j);
+  }
+  
+  return nums;
+};
+
+const swap = (nums, i, j) => {
+  let temp = nums[i];
+  nums[i] = nums[j];
+  nums[j] = temp;
+};
+
+// Easy typo with i and j
+// const swap = (nums, i, j) => {
+//   [nums[i], nums[j]] = [nums[j], nums[i]];
+// };

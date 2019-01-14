@@ -47,7 +47,7 @@ const partition = function(nums, pivot, left, right) {
 
   // swap
   [nums[right], nums[partitionIndex]] = [nums[partitionIndex], nums[right]];
-  return partitionIndex;
+  return partitionIndex; // where the final location of pivotValue
 }
 
 let test1 = [1, 3, 5, 2, 7, 2, 4, 6];
