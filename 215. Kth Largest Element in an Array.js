@@ -225,6 +225,13 @@ const partition = (nums, pivot, start, end) => {
   return partitionIdx;
 };
 
+// To shuffle array evenly:
+// Swap nums[i] with nums[j] within selecting nums[i] in range [0...j] within P = 1/ (1+j)
+// Two cases:
+// 1. select i === j, P = 1/(1+j), no need to swap
+// 2. select i !== j, P = j/(1+j), choose another value in range[0...j-1]: P = 1/j
+//    Total P = j/(1+j) * 1/j = 1 / (1+j)
+// Each value in array have equal probability at any position.
 const shuffle = (nums) => {
   if (nums.length < 2) return nums;
   for (let j = 1; j < nums.length; j += 1) {
