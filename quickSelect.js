@@ -4,20 +4,21 @@
  * T: O(n) in average, O(n^2) in worst, S: O(1)
  */
 /**
- * Quick Select function
+ * Quick Select function:
+ * Find the kth number and return the array (1/13/2019 Update)
  * 
- * @param {array} arr
+ * @param {array} nums
  * @param {number} k
  * @return {array} array partition by kth number
  */
-const quickSelect = function(arr, k) {
-  if (k > arr.length) return -1;
+const quickSelect = function(nums, k) {
+  if (k > nums.length) return -1;
   
-  let left = 0, right = arr.length - 1;
+  let left = 0, right = nums.length - 1;
   while (true) {
     let pivot = right;
-    let partitionedIndex = partition(arr, pivot, left, right);
-    if (partitionedIndex === k - 1) return arr;
+    let partitionedIndex = partition(nums, pivot, left, right);
+    if (partitionedIndex === k - 1) return nums;
     else if (partitionedIndex > k - 1) right = partitionedIndex - 1;
     else left = partitionedIndex + 1;
   }
@@ -26,26 +27,26 @@ const quickSelect = function(arr, k) {
 /**
  * Partition helper function
  * 
- * @param {array} arr
+ * @param {array} nums
  * @param {number} pivot
  * @param {number} left
  * @param {number} right
  * @return {number} partitionedIndex
  */
-const partition = function(arr, pivot, left, right) {
-  let pivotValue = arr[pivot];
+const partition = function(nums, pivot, left, right) {
+  let pivotValue = nums[pivot];
   let partitionIndex = left;
 
   for (let i = left; i < right; i += 1) {
-    if (arr[i] < pivotValue) {
+    if (nums[i] < pivotValue) {
       // swap
-      [arr[i], arr[partitionIndex]] = [arr[partitionIndex], arr[i]];
+      [nums[i], nums[partitionIndex]] = [nums[partitionIndex], nums[i]];
       partitionIndex += 1;
     }
   }
 
   // swap
-  [arr[right], arr[partitionIndex]] = [arr[partitionIndex], arr[right]];
+  [nums[right], nums[partitionIndex]] = [nums[partitionIndex], nums[right]];
   return partitionIndex;
 }
 
