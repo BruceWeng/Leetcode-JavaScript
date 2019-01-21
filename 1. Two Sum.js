@@ -33,3 +33,24 @@
      }
 
  }
+
+ /**
+  * Leetcode Fundamental: Map, Update 1/21/2019
+  */
+ /**
+ * @param {number[]} nums
+ * @param {number} target
+ * @return {number[]}
+ */
+var twoSum = function(nums, target) {
+    let map = new Map();
+    // Map stores target - num as key and curr index as value
+    for (let i = 0; i < nums.length; i += 1) {
+      if (map.has(nums[i])) return [map.get(nums[i]), i];
+      
+      let key = target - nums[i];
+      map.set(key, i);
+    }
+    
+    return [];
+  };
