@@ -24,6 +24,8 @@ function MinStack() {
   
   this.push = (num) => {
     let stack = this.stack;
+    if (stack.length === 0) this.min = num;
+    
     // Push old min again if num <= min, reassign min, then push num
     if (num <= this.min) {
       stack.push(this.min);
@@ -34,12 +36,13 @@ function MinStack() {
   
   this.pop = () => {
     let stack = this.stack;
-    let lastIdx = stack.length - 1;
     // evaluate value of stack.pop
     // if stack.pop() === min: pop again and reassign min
-    if (stack.pop() === this.min) {
+    let val = stack.pop();
+    if (val === this.min) {
       this.min = stack.pop(); // reassign min
     }
+    return val;
   }
   
   this.top = () => {
