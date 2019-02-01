@@ -1,8 +1,14 @@
 /**
  * string1: "abb" -> string2: "ac"
  * 1. delete string1: "ab" -> "ac" (i-1, j)
- * 2. insert string1 and string2: "abbc" -> "ac" = "abb" -> "a" (i, j-1)
+ * 2. insert string1 aka delete string2: "abbc" -> "ac" = "abb" -> "a" (i, j-1)
  * 3. replace string1: "abc" -> "ac" = "ab" -> "a" (i-1, j-1)
+ * 
+ * Pattern:
+ * 1. current char matech (replace string): dp[i][j] = dp[i-1][j-1]
+ * 2. delete current char: find previous char state:
+ *      a. delete char at string1: dp[i][j] = dp[i-1][j]
+ *      b. delete chat at string2: dp[i][j] = dp[i][j-1]
  * 
  * DP Solution:
  * T: O(m*n)
