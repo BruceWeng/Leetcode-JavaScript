@@ -43,7 +43,7 @@ Explanation: transactions = [buy, sell, cooldown, buy, sell]
  *   b.3 rest[i] = max(rest action from rest, rest action from sold)
  *               = max(rest[i-1], sold[i-1])
  * c. Day 0 initialization for each stage:
- *    hold[0] = -infinite (paid some price)
+ *    hold[0] = -prices[0] (paid prices[0])
  *    sold[0] = 0 (sell nothing)
  *    rest[0] = 0
  * d. Answer: max(rest[n], sold[n])
@@ -58,7 +58,7 @@ Explanation: transactions = [buy, sell, cooldown, buy, sell]
 const maxProfit = (prices) => {
   let n = prices.length;
   let hold = new Array(n + 1).fill(0);
-  hold[0] = Number.MIN_SAFE_INTEGER;
+  hold[0] = -prices[0];
   let sold = new Array(n + 1).fill(0);
   let rest = new Array(n + 1).fill(0);
 
