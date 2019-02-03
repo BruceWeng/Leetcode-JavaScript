@@ -149,7 +149,10 @@ const quickSolve = function(prices) {
  *     sold[0][j] = 0 (sell nothing)
  * 
  * C.2 Initialize transaction 0 for ith day:
- *     hold[i][0] = max(privous day transaction 0, -prices[0] (paid prices[0]))
+ *     hold[i][0] = max(
+ *                      privous day hold but 0 transaction, 
+ *                      -prices[i] (paid prices[i])
+ *                     )
  *     sold[i][0] = 0 (sell nothing)
  * 
  * D. Answer = max(hold[n][k], sold[n][k])
@@ -180,7 +183,7 @@ const maxProfit = (k, prices) => {
   }
 
   for (let i = 0; i < n; i += 1) { // initial 0th transaction at ith day
-    hold[i+1][0] = Math.max(hold[i][0], -prices[i]);
+    hold[i+1][0] = Math.max(hold[i][0], -prices[i]); // max(prev hold but no transaction, paid prices[i])
   }
 
   let sold = [];

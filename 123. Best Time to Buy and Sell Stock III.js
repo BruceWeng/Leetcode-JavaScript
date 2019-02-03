@@ -72,25 +72,60 @@ let test1 = [0, 1, 3, 1, 6, 8, 10, 4, 6, 7, 2];
 console.log(maxProfit(test1));//13
 
 /**
- * Leetcode Fundamental: 2/1/2019 Update
+ * Leetcode Fundamental: 2/3/2019 Update
  * Algorithm: Finite State Machine DP
- * Stages:
- * Hold1
- * Sold1
- * Hold2
- * Sold2
- * 
- * Actions:
- * buy
- * sell
  * 
  * Finite State Machine:
  * 
- *  buy -> Hold1 -> sell -> Sold1 -> buy -> Hold2 -> sell -> Sold2
- *  -prices[i]      +prices[i]       -prices[i]      +prices[i]
- *               
- * 1. Each stage store max profit of the ith day
- * 2. Transder function:
- *    hold1[i] = max(hold1[i-1], -prices[i])
- *    sold1[i] = max()
+ * States: hold, sold
+ * Actions: rest, sell, buy
+ * 
+ *                  
+ *                  sell
+ *    rest -> hold -----> sold -> rest
+ *         <-      <-----      <-
+ *                   buy
+ * 
+ * Reference: Reduce from 188. k transaction to 2 transaction
+ * 
+ * T: O(n), S: O(n)
+ * Runtime: 168 ms
  */
+/**
+ * @param {number[]} prices
+ * @return {number}
+ */
+var maxProfit = function(prices) {
+  if (prices === undefined || prices.length === 0) return 0;
+  
+  let n = prices.length;
+  let k = 2;
+  
+  let hold = [];
+  for (let i = 0; i < n + 1; i += 1) { // row: n days
+    hold.push(new Array(k + 1).fill(0)); // col: k+1 transactions
+  }
+
+  for (let j = 0; j < k + 1; j += 1) { // initial 0th day
+    hold[0][j] = -prices[0];
+  }
+
+  for (let i = 0; i < n; i += 1) { // initial 0th transaction
+    hold[i+1][0] = Math.max(hold[i][0], -prices[i]);
+  }
+
+  let sold = [];
+  for (let i = 0; i < n + 1; i += 1) { // row: n days
+    sold.push(new Array(k + 1).fill(0)); // col: k+1 transactions
+  }
+
+  // FSM DP
+  for (let i = 0; i < n; i += 1) { // i is the index of prices[i], map to states[i+1]
+    for (let j = 0; j < k; j += 1) {
+      hold[i+1][j+1] = Math.max(hold[i][j+1], sold[i][j+1] - prices[i]);
+      sold[i+1][j+1] = Math.max(sold[i][j+1], hold[i][j] + prices[i]);
+    }
+  }
+
+  return Math.max(hold[n][k], sold[n][k]);
+};
