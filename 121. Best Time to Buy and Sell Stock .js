@@ -49,3 +49,35 @@ const maxProfit = function(prices) {
 
   return result;
 };
+
+/**
+ * Leetcode Fundamental: 2/2/2019
+ * 1. Convert prices[] to gains[] by gains[i] = prices[i] - prices[i-1]
+ * Algorithm: Kadane
+ * 0. Initial max = new Array(n).fill(0), result = new Array(n).fill(0)
+ * 1. max[i] = max(max[i-1] + gains[i], gains[i])
+ * 2. result[i] = max(result[i-1], max[i])
+ * 3. return result[n-1]
+ * 
+ * T: O(n), S: O(n)
+ */
+/**
+ * @param {number[]} prices
+ * @return {number}
+ */
+const maxProfit = function(prices) {
+  if (prices === undefined || prices.length === 0) return 0;
+  let n = prices.length;
+  let gains = new Array(n).fill(0);
+  for (let i = 1; i < n; i += 1) gains[i] = prices[i] - prices[i-1];
+
+  let max = new Array(n + 1).fill(0);
+  let result = new Array(n + 1).fill(0);
+
+  for (let i = 1; i < n; i += 1) { // i is index of prices, states[i+1]
+    max[i] = Math.max(max[i-1] + gains[i], gains[i]);
+    result[i] = Math.max(result[i-1], max[i]);
+  }
+
+  return result[n-1];
+};
