@@ -9,7 +9,7 @@ All the scores of athletes are guaranteed to be unique.
 /**
  * Algorithm 1: Regular sorting with compare func
  * T: O(nlogn)
- * 
+ *
  * Algorithm 2: Hash table
  * T: O(max(num))
  */
@@ -17,13 +17,11 @@ All the scores of athletes are guaranteed to be unique.
  * @param {number[]} nums
  * @return {string[]}
  */
-var findRelativeRanks = function(nums) {
+var findRelativeRanks = function(nums) {};
 
-};
-
-let input = [5, 4, 3, 2, 1]
+let input = [5, 4, 3, 2, 1];
 console.log(findRelativeRanks(input)); // ["Gold Medal", "Silver Medal", "Bronze Medal", "4", "5"]
-//Explanation: The first three athletes got the top three highest scores, so they got "Gold Medal", "Silver Medal" and "Bronze Medal". 
+//Explanation: The first three athletes got the top three highest scores, so they got "Gold Medal", "Silver Medal" and "Bronze Medal".
 //For the left two athletes, you just need to output their relative ranks according to their scores.
 
 /*
@@ -43,11 +41,20 @@ rankings([4, 2, 3, 1]); // [1, 3, 2, 4]
  * Algorithm 1: Regular sorting
  * Ranking: new index of sorted array + 1
  * Position: original index
- * 
+ *
  * Algorithm 2: Hash table
- * 
+ * 1. Fill -1 to range(0 to maxVal) in the hash table
+ * 2. Initiate rank = 1
+ * 3. Backward traversing hash table and stores rank in position i in result
+ * 4. Increment rank
+ * 5. Return result
+ *
+ * Note: No negative number allowed
+ *
+ * Extends to allow negative number:
+ * Let the hash map range from maxVal to (maxVal - minVal)
  */
-const rankings = (nums) => {
+const rankings = nums => {
   let pairs = [];
   let result = new Array(nums.length);
   for (let i = 0; i < nums.length; i += 1) {
@@ -62,17 +69,16 @@ const rankings = (nums) => {
   }
 
   return result;
-}
+};
 
-const rankings2 = (nums) => {
+const rankings2 = nums => {
   let maxVal = Number.MIN_SAFE_INTEGER;
   for (let num of nums) {
     maxVal = Math.max(maxVal, num);
   }
-  
+
   let hash = new Array(maxVal).fill(-1); // index: num, value: position
-  for (let i = 0; i < nums.length; i += 1) 
-    hash[nums[i]] = i; // filling position
+  for (let i = 0; i < nums.length; i += 1) hash[nums[i]] = i; // filling position
 
   let result = [];
   let rank = 1;
@@ -84,9 +90,9 @@ const rankings2 = (nums) => {
   }
 
   return result;
-}
+};
 
-const rankings3 = (nums) => {
+const rankings3 = nums => {
   // Solution2 with allowing negative numbers
   let maxVal = Number.MIN_SAFE_INTEGER;
   let minVal = Number.MAX_SAFE_INTEGER;
@@ -94,10 +100,9 @@ const rankings3 = (nums) => {
     maxVal = Math.max(maxVal, num);
     minVal = Math.min(minVal, num);
   }
-  
-  let hash = new Array(maxVal-minVal).fill(-1); // index: num, value: position
-  for (let i = 0; i < nums.length; i += 1) 
-    hash[nums[i]-minVal] = i; // filling position
+
+  let hash = new Array(maxVal - minVal).fill(-1); // index: num, value: position
+  for (let i = 0; i < nums.length; i += 1) hash[nums[i] - minVal] = i; // filling position
 
   let result = [];
   let rank = 1;
@@ -109,7 +114,7 @@ const rankings3 = (nums) => {
   }
 
   return result;
-}
+};
 console.log(rankings2([10, 5, 20])); // [2, 3, 1]
 console.log(rankings2([6, 8, 1, 12, 4, 3, 9])); // [4, 3, 7, 1, 5, 6, 2]
 console.log(rankings2([100])); // [1]
