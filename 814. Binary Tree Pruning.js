@@ -11,15 +11,15 @@
  */
 var pruneTree = function (root) {
   if (root === null) return null;
-  dfs(root);
+  postOrder(root);
   return root;
 };
 
-function dfs(node) {
+function postOrder(node) {
   if (node === null) return null;
 
-  node.left = dfs(node.left);
-  node.right = dfs(node.right);
+  node.left = postOrder(node.left);
+  node.right = postOrder(node.right);
 
   if (node.left === null && node.right === null && node.val === 0) return null;
   else return node;
