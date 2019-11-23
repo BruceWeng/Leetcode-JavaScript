@@ -22,34 +22,34 @@
  * @param {string} word1 
  * @param {string} word2 
  */
-var minDistance = function(word1, word2) {
-    let m = word1.length;
-    let n = word2.length;
+var minDistance = function (word1, word2) {
+  let m = word1.length;
+  let n = word2.length;
 
-    let stages = []; // m as stages, n as states
-    for (let i = 0; i < m+1; i += 1) stages.push(new Array(n+1).fill(0));
+  let stages = []; // m as stages, n as states
+  for (let i = 0; i < m + 1; i += 1) stages.push(new Array(n + 1).fill(0));
 
-    // stages[i][j] = minDistance(word1[:i+1], word2[:j+1]) [Include word1[i] and word2[j]]
-    for (let i = 0; i < m+1; i += 1) {
-      stages[i][0] = i;
+  // stages[i][j] = minDistance(word1[:i+1], word2[:j+1]) [Include word1[i] and word2[j]]
+  for (let i = 0; i < m + 1; i += 1) {
+    stages[i][0] = i;
+  }
+
+  for (let j = 0; j < n + 1; j += 1) {
+    stages[0][j] = j;
+  }
+
+  for (let i = 1; i < m + 1; i += 1) {
+    for (let j = 1; j < n + 1; j += 1) {
+      let delta = (word1[i - 1] === word2[j - 1]) ? 0 : 1;
+      stages[i][j] = Math.min(
+        stages[i - 1][j - 1] + delta, // Replace
+        stages[i - 1][j] + 1, // Delete
+        stages[i][j - 1] + 1 // Insert
+      );
     }
+  }
 
-    for (let j = 0; j < n+1; j += 1) {
-      stages[0][j] = j;
-    }
-
-    for (let i = 1; i < m+1; i += 1) {
-      for (let j = 1; j < n+1; j += 1) {
-        let delta = (word1[i-1] === word2[j-1]) ? 0: 1;
-        stages[i][j] = Math.min(
-          stages[i-1][j-1] + delta, // Replace
-          stages[i-1][j] + 1, // Delete
-          stages[i][j-1] + 1 // Insert
-        );
-      }
-    }
-
-    return stages[m][n];
+  return stages[m][n];
 };
 
 let test2 = 'orange';
@@ -102,26 +102,63 @@ const edist = (word1, word2) => {
  * S: O(n)
  * Runtime: 104 ms
  */
-var minDistance = function(word1, word2) {
+var minDistance = function (word1, word2) {
   let m = word1.length;
   let n = word2.length;
 
-  let prevStage = new Array(n+1).fill(0); // n states
+  let prevStage = new Array(n + 1).fill(0); // n states
 
-  for (let j = 0; j < n+1; j += 1) prevStage[j] = j;
+  for (let j = 0; j < n + 1; j += 1) prevStage[j] = j;
 
-  for (let i = 1; i < m+1; i += 1) {
-    let currStage = new Array(n+1).fill(i); // Init initial stages for row i
-    for (let j = 1; j < n+1; j += 1) {
-      let delta = (word1[i-1] === word2[j-1]) ? 0: 1;
+  for (let i = 1; i < m + 1; i += 1) {
+    let currStage = new Array(n + 1).fill(i); // Init initial stages for row i
+    for (let j = 1; j < n + 1; j += 1) {
+      let delta = (word1[i - 1] === word2[j - 1]) ? 0 : 1;
       currStage[j] = Math.min(
-        prevStage[j-1] + delta, // Replace
+        prevStage[j - 1] + delta, // Replace
         prevStage[j] + 1, // Delete
-        currStage[j-1] + 1 // Insert
+        currStage[j - 1] + 1 // Insert
       );
     }
     prevStage = [...currStage]; // Copy currStage as prevStage for next iteration
   }
 
   return prevStage[n];
+};
+
+/**
+ * 2019/11/23 Revisit
+ */
+/**
+ * @param {string} word1
+ * @param {string} word2
+ * @return {number}
+ */
+var minDistance = function (word1, word2) {
+  if (word1.length === 0) return word2.length;
+  if (word2.length === 0) return word1.length;
+
+  let stages = [];
+  let states = new Array(word2.length + 1).fill(0);
+  for (let i = 0; i < word1.length + 1; i += 1) {
+    stages.push([...states]);
+  }
+  for (let i = 0; i < word1.length + 1; i += 1) {
+    stages[i][0] = i;
+  }
+  for (let j = 0; j < word2.length + 1; j += 1) {
+    stages[0][j] = j;
+  }
+
+  for (let i = 1; i < stages.length; i += 1) {
+    for (let j = 1; j < stages[i].length; j += 1) {
+      if (word1[i - 1] !== word2[j - 1]) {
+        stages[i][j] = stages[i][j] = Math.min(stages[i - 1][j - 1], stages[i - 1][j], stages[i][j - 1]) + 1;
+      } else {
+        stages[i][j] = stages[i - 1][j - 1];
+      }
+    }
+  }
+
+  return stages[word1.length][word2.length];
 };
