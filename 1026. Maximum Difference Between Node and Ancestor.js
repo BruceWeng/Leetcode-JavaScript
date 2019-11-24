@@ -11,16 +11,16 @@
  */
 var maxAncestorDiff = function (root) {
 
-  return dfs(root, root.val, root.val);
+  return postOrder(root, root.val, root.val);
 
-  function dfs(node, max, min) {
+  function postOrder(node, max, min) {
     if (node === null) return max - min;
 
     max = Math.max(max, node.val);
     min = Math.min(min, node.val);
 
-    let leftMax = dfs(node.left, max, min);
-    let rightMax = dfs(node.right, max, min);
+    let leftMax = postOrder(node.left, max, min);
+    let rightMax = postOrder(node.right, max, min);
 
     return Math.max(leftMax, rightMax);
   }
