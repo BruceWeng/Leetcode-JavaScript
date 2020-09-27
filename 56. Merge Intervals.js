@@ -13,7 +13,7 @@ Output: [[1,5]]
 Explanation: Intervals [1,4] and [4,5] are considered overlapping.
  */
 /**
- * Leetcode Fundamental: 12/7 Update
+ * Leetcode Fundamental: 12/7 Update, 2020/9/27 Update
  * 
  * Greedy Solution
  * 
@@ -22,33 +22,22 @@ Explanation: Intervals [1,4] and [4,5] are considered overlapping.
  * Runtime: 76 ms
  */
 /**
- * Definition for an interval.
- * function Interval(start, end) {
- *     this.start = start;
- *     this.end = end;
- * }
+ * @param {number[][]} intervals
+ * @return {number[][]}
  */
-/**
- * @param {Interval[]} intervals
- * @return {Interval[]}
- */
-var merge = function(intervals) {
+var merge = function (intervals) {
   if (intervals === undefined || intervals.length === 0) return [];
-  
-  intervals.sort((a, b) => a.start - b.start);
   let result = [];
-  let prevStart = intervals[0].start;
-  let prevEnd = intervals[0].end;
-  
-  for (let {start, end} of intervals) {
-    if (start <= prevEnd) prevEnd = Math.max(prevEnd, end);
-    else {
-      result.push(new Interval(prevStart, prevEnd));
-      prevStart = start;
-      prevEnd = end;
+  intervals.sort((a, b) => a[0] - b[0]);
+  let prevInterval = intervals[0];
+  for (let i = 1; i < intervals.length; i++) {
+    if (prevInterval[1] >= intervals[i][0]) {
+      prevInterval[1] = Math.max(prevInterval[1], intervals[i][1]);
+    } else {
+      result.push(prevInterval);
+      prevInterval = intervals[i];
     }
   }
-  
-  result.push(new Interval(prevStart, prevEnd));
+  result.push(prevInterval);
   return result;
 };
