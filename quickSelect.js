@@ -11,9 +11,9 @@
  * @param {number} k
  * @return {array} array partition by kth number
  */
-const quickSelect = function(nums, k) {
+function quickSelect(nums, k) {
   if (k > nums.length) return -1;
-  
+  nums = shuffle(nums);
   let left = 0, right = nums.length - 1;
   while (true) {
     let pivot = right;
@@ -22,6 +22,29 @@ const quickSelect = function(nums, k) {
     else if (partitionedIndex > k - 1) right = partitionedIndex - 1;
     else left = partitionedIndex + 1;
   }
+}
+/**
+ * Swap nums element
+ * @param {array} nums 
+ * @param {number} a 
+ * @param {number} b 
+ */
+function swap(nums, a, b) {
+  [nums[a], nums[b]] = [nums[b], nums[a]];
+};
+
+/**
+ * Shuffle array
+ * 
+ * @param {array} nums 
+ */
+function shuffle(nums) {
+  if (nums.length < 2) return nums;
+  for (let j = 1; j < nums.length; j += 1) {
+    let i = Math.floor(Math.random() * (j + 1));
+    swap(nums, i, j);
+  }
+  return nums;
 }
 
 /**
@@ -33,20 +56,16 @@ const quickSelect = function(nums, k) {
  * @param {number} right
  * @return {number} partitionedIndex
  */
-const partition = function(nums, pivot, left, right) {
+function partition(nums, pivot, left, right) {
   let pivotValue = nums[pivot];
   let partitionIndex = left;
-
   for (let i = left; i < right; i += 1) {
     if (nums[i] < pivotValue) {
-      // swap
-      [nums[i], nums[partitionIndex]] = [nums[partitionIndex], nums[i]];
+      swap(nums, i, partitionIndex);
       partitionIndex += 1;
     }
   }
-
-  // swap
-  [nums[right], nums[partitionIndex]] = [nums[partitionIndex], nums[right]];
+  swap(nums, right, partitionIndex);
   return partitionIndex; // where the final location of pivotValue
 }
 
