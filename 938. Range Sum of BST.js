@@ -27,3 +27,13 @@ function inOrder(node, L, R, result) {
 
   inOrder(node.right, L, R, result);
 }
+
+// 2021/01/11 Preserve sum value in each node.
+function rangeSumBST(root, low, high) {
+  if (root === null) return 0;
+  let sum = 0;
+  if (root.val > low) sum += rangeSumBST(root.left, low, high);
+  if (root.val < high) sum += rangeSumBST(root.right, low, high);
+  if (root.val >= low && root.val <= high) sum += root.val;
+  return sum;
+};
