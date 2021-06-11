@@ -13,6 +13,71 @@ multiple answers, return the answer that occurs last in the given 2D-array. The 
 should be in the same format, with u < v.
  */
 /**
+ * @param {number[][]} edges
+ * @return {number[]}
+ */
+ var findRedundantConnection = function(edges) {
+	let edgesObj = createGraph(edges)
+	let states = createStates(edges)
+
+	for(let i=edges.length-1; i>=0; i--) {
+    let notTree = false
+	  let [srcKey, destKey] = edges[i]
+	  removeEdge(edgesObj, srcKey, destKey)
+	  // detect valid tree structure
+	  for(let start=1; start<=edges.length; start++) {
+	    if(hasCycle(start, edgesObj, {...states})) {
+        notTree = true
+        addEdge(edgesObj, srcKey, destKey)
+        break
+	    }
+	  }
+    if(notTree) continue
+    return [srcKey, destKey]
+	}
+};
+      
+function hasCycle(start, edgesObj, states, parentKey=start) {
+  states[start] = 'VISITED'
+  for(let destKey of edgesObj[start]) {
+    if(states[destKey]==='VISITED' && destKey!==parentKey) return true
+    if(states[destKey]==='UNVISITED' && hasCycle(destKey, edgesObj, states, start)) return true
+  }
+	return false
+}
+ 
+function createStates(edges) {
+	const states = {}
+	for(let i=1; i<=edges.length; i++) {
+		states[i] = 'UNVISITED'
+	}
+	return states
+}
+
+function createGraph(edges) {
+	const edgesObj = {}
+	for(let edge of edges) {
+	  let srcKey = edge[0]
+	  let destKey = edge[1]
+	  if(!(srcKey in edgesObj)) edgesObj[srcKey] = new Set()
+	  edgesObj[srcKey].add(destKey)
+    if(!(destKey in edgesObj)) edgesObj[destKey] = new Set()
+    edgesObj[destKey].add(srcKey)
+	}
+	return edgesObj
+}
+      
+function removeEdge(edgesObj, srcKey, destKey) {
+	edgesObj[srcKey].delete(destKey)
+  edgesObj[destKey].delete(srcKey)
+}
+      
+function addEdge(edgesObj, srcKey, destKey) {
+	edgesObj[srcKey].add(destKey)
+  edgesObj[destKey].add(srcKey)
+}
+
+/**
  * Algorithm: Union Find
  */
 class UnionFindSet {
