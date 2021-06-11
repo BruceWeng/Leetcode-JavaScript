@@ -25,22 +25,22 @@
 };
       
 function hasCycle(start, edgesObj, states) {
-	if(states[start]===-1) return false
-	if(states[start]===1) return true
-	states[start] = 1
+	if(states[start]==='NO_CYCLE') return false
+	if(states[start]==='CYCLE') return true
+	states[start] = 'CYCLE'
 	if(start in edgesObj) {
 		for(let destKey of edgesObj[start]) {
 			if(hasCycle(destKey, edgesObj, states)) return true
 		}
 	}
-	states[start] = -1
+	states[start] = 'NO_CYCLE'
 	return false
 }
  
 function createStates(edges) {
 	const states = {}
 	for(let i=1; i<=edges.length; i++) {
-		states[i] = 0
+		states[i] = 'UNVISITED'
 	}
 	return states
 }
