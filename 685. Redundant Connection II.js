@@ -13,9 +13,8 @@
 	  removeEdge(edgesObj, srcKey, destKey, inDegrees)
 	  // detect valid tree structure
 	  for(let start=1; start<=edges.length; start++) {
-	    if(hasCycle(start, edgesObj, states) || hasMultipleParents(inDegrees)) {
+	    if(hasCycle(start, edgesObj, {...states}) || hasMultipleParents(inDegrees)) {
         notTree = true
-        states = createStates(edges)
         addEdge(edgesObj, srcKey, destKey, inDegrees)
         break
 	    }
