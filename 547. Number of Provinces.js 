@@ -1,0 +1,52 @@
+/**
+ * @param {number[][]} isConnected
+ * @return {number}
+ */
+var findCircleNum = function(isConnected) {
+  const edges = createGraph(isConnected)
+  const group_sets = []
+  for(let i=0; i<isConnected.length; i++) { // key level
+    let visited = false
+    for(let sets of group_sets) { // group level
+      if(sets.has(i)) {
+        visited = true
+        break
+      }
+    }
+    if(visited) continue
+    let disjointset = new Set()
+    dfs(i, disjointset, edges)
+    group_sets.push(disjointset)
+  }
+  return group_sets.length  
+};
+
+function dfs(src_key, disjointset, edges, visited={}) {
+  if(src_key in visited) return false
+  if(!(src_key in edges)) return false
+  // do something
+  disjointset.add(src_key)
+  visited[src_key] = true
+  for(let dest_key of edges[src_key]) {
+    dfs(dest_key, disjointset, edges, visited)
+  }
+}
+
+function createGraph(isConnected) {
+  const edges = {}
+  for(let i=0; i<isConnected.length; i++) {
+    if(!(i in edges)) edges[i] = new Set()
+    let neighbors = isConnected[i]
+    for(let j=0; j<neighbors.length; j++) {
+      if(j===i) continue
+      let neighbor = neighbors[j]
+      if(neighbor===1) {
+        if(!(i in edges)) edges[i] = new Set()
+        edges[i].add(j)
+        if(!(j in edges)) edges[j] = new Set()
+        edges[j].add(i)       
+      }
+    }
+  }
+  return edges
+}
