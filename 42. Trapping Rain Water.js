@@ -10,6 +10,33 @@ Input: [0,1,0,2,1,0,1,3,2,1,2,1]
 Output: 6
  */
 /**
+ * Update 2021/6/23
+ * Two pointers
+ */
+/**
+ * @param {number[]} height
+ * @return {number}
+ */
+function trap(height) {
+  if(height.length===0) return 0
+  let left = 0, right = height.length-1, 
+      leftMax = 0, rightMax = 0, result = 0
+  while(left<=right) {
+    if(height[left]<=height[right]) {
+      if(height[left]>=leftMax) leftMax = height[left]
+      result += leftMax-height[left]
+      left++
+    }
+    else {
+      if(height[right]>=rightMax) rightMax = height[right]
+      result += rightMax-height[right]
+      right--
+    }
+  }
+  return result
+};
+
+/**
  * Data Structure: Decreasing Stack
  * Algorithm: Reverse 84. Largest Rectangle in Histogram
  * 
