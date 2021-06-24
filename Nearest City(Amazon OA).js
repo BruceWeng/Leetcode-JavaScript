@@ -42,10 +42,16 @@ function closestStraightCity(c, x, y, q) {
         let cache = {}
         for(let string of nbors) {
             if(string===query) continue
-            let key = `${query}-${string}`
-            let dist = (key in cache) 
-                ? cache[key]
-                : getDist(query, string, pointToIdx, x, y)
+            let key1 = `${query}-${string}`
+						let key2 = `${string}-${query}`
+						let dist = 0
+            if(key1 in cache) dist = cache[key1]
+						else if(key2 in cache) dist = cache[key2]
+						else {
+							dist = getDist(query, string, pointToIdx, x, y)
+							cache[key1] = dist
+							cache[key2] = dist
+						}
             if(dist<minDist) {
                 minDist = dist
                 min = string
